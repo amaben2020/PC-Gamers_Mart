@@ -9,3 +9,13 @@ h3 {
 .rating span {
 	margin: 0.1rem;
 }
+
+.card-img {
+	overflow: hidden;
+}
+.card-img {
+	transition: all 1.5s ease-out;
+}
+.card-img:hover {
+	transform: scale(1.13);
+}
