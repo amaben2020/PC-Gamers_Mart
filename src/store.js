@@ -13,19 +13,18 @@ const reducer = combineReducers({
 	cart: cartReducers,
 });
 
-const middleware = [thunk];
-
 //storing backend products/:id property in cartItems state
 const cartItemsFromStorage = localStorage.getItem("cartItems")
-	? JSON.parse(localStorage.getItem("cartItems"))
+	? JSON.parse(localStorage.getItem("cartItems")) //removed JSON.parse
 	: [];
+console.log("This is an", typeof cartItemsFromStorage);
 
 //Putting the cartItems in a global state
 const initialState = {
 	cart: { cartItems: cartItemsFromStorage },
 };
 console.log(initialState.cart);
-
+const middleware = [thunk];
 const store = createStore(
 	reducer,
 	initialState,
