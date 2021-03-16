@@ -17,6 +17,7 @@ import ErrorMessage from "../../messages/ErrorMessage";
 const ProductScreen = ({ match, history }) => {
 	const dispatch = useDispatch();
 	const productDetails = useSelector((state) => state.productDetails);
+	console.log(productDetails);
 	const [qty, setQty] = useState(1);
 	const { product, loading, error } = productDetails;
 	//Render the product based on IDs. FLUID: to keep in container
