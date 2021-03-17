@@ -6,32 +6,46 @@ import {
 	productDetailsReducer,
 } from "./actions/productReducers";
 import { cartReducers } from "./actions/cartReducers";
-import { userLoginReducer } from "./actions/userReducers";
+import {
+	userLoginReducer,
+	userDetailsReducer,
+	userRegisterReducer,
+	userUpdateProfileReducer,
+} from "./actions/userReducers";
 const reducer = combineReducers({
 	productList: productListReducer,
 	productDetails: productDetailsReducer,
 	cart: cartReducers,
 	userLogin: userLoginReducer,
+	userDetails: userDetailsReducer,
+	userRegister: userRegisterReducer,
+	userUpdateProfile: userUpdateProfileReducer,
 });
 
 //storing backend products/:id property in cartItems state
 const cartItemsFromStorage = localStorage.getItem("cartItems")
 	? JSON.parse(localStorage.getItem("cartItems")) //removed JSON.parse
 	: [];
-console.log("This is an", typeof cartItemsFromStorage);
 
 // if we have a userInfo in storage, then convert to an object for us to use
 const userInfoFromStorage = localStorage.getItem("userInfo")
 	? JSON.parse(localStorage.getItem("userInfo"))
 	: null;
 
+const shippingAddressFromStorage = localStorage.getItem("shippingAddress")
+	? JSON.parse(localStorage.getItem("shippingAddress"))
+	: {};
+
 //Putting the cartItems in a global state
 const initialState = {
-	cart: { cartItems: cartItemsFromStorage },
+	cart: {
+		cartItems: cartItemsFromStorage,
+		shippingAdd: shippingAddressFromStorage,
+	},
 	userLogin: { userInfo: userInfoFromStorage },
 };
-console.log(initialState.cart);
-console.log(initialState.userLogin);
+console.log(initialState.cart.shippingAddress);
+
 const middleware = [thunk];
 const store = createStore(
 	reducer,

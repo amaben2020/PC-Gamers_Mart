@@ -9,24 +9,25 @@ import { login } from "./../../actions/userActions";
 const LoginScreen = ({ location, history }) => {
 	const [password, setPassword] = useState("");
 	const [email, setEmail] = useState("");
-
 	const dispatch = useDispatch();
 	const userLogin = useSelector((state) => state.userLogin);
 	const { loading, error, userInfo } = userLogin;
 
+	//Redirect moves you to the homepage '/' when you successfully login
 	const redirect = location.search ? location.search.split("=")[1] : "/";
 	console.log(redirect);
 	console.log(location);
 
-	const submitHandler = () => {
-		console.log("clicked");
+	const submitHandler = (e) => {
+		e.preventDefault();
+		dispatch(login(email, password));
 	};
 
+	//userInfo is the token, if the token is available, redirect to homepage
 	useEffect(() => {
 		if (userInfo) {
 			history.push(redirect);
 		}
-		dispatch(login(email, password));
 	}, [history, userInfo, redirect]);
 
 	return (
@@ -45,10 +46,10 @@ const LoginScreen = ({ location, history }) => {
 					></Form.Control>
 				</Form.Group>
 				<Form.Group controlId="password">
-					<Form.Label>Email Address</Form.Label>
+					<Form.Label>Password</Form.Label>
 					<Form.Control
 						type="password"
-						placeholder="Enter Email"
+						placeholder="Enter Password"
 						value={password}
 						onChange={(e) => setPassword(e.target.value)}
 					></Form.Control>
