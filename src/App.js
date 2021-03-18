@@ -10,6 +10,8 @@ import RegisterScreen from "./components/screen/RegisterScreen";
 import ProfileScreen from "./components/screen/ProfileScreen";
 import ShippingScreen from "./components/screen/ShippingScreen";
 import PaymentScreen from "./components/screen/PaymentScreen";
+import PlaceOrderScreen from "./components/screen/PlaceOrderScreen";
+
 function App() {
 	return (
 		<Router>
@@ -17,6 +19,7 @@ function App() {
 			<main className="py-3 ">
 				<Container>
 					<Route path="/login" component={LoginScreen} exact />
+					<Route path="/placeorder" component={PlaceOrderScreen} exact />
 					<Route path="/payment" component={PaymentScreen} exact />
 					<Route path="/shipping" component={ShippingScreen} exact />
 					<Route path="/register" component={RegisterScreen} exact />

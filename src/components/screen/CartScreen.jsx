@@ -22,8 +22,7 @@ const CartScreen = ({ match, location, history }) => {
 	const qty = location.search ? Number(location.search.split("=")[1]) : 1;
 
 	const { cartItems } = cart;
-	console.log(cartItems);
-	console.log(cartItems);
+
 	useEffect(() => {
 		//we only wanna addToCart if there is a productId
 		if (productId) {
