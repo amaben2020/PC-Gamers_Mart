@@ -15,8 +15,8 @@ const LoginScreen = ({ location, history }) => {
 
 	//Redirect moves you to the homepage '/' when you successfully login
 	const redirect = location.search ? location.search.split("=")[1] : "/";
-	console.log(redirect);
-	console.log(location);
+	// console.log(redirect); shipping
+	// console.log(location.search); ?redirect=shipping
 
 	const submitHandler = (e) => {
 		e.preventDefault();

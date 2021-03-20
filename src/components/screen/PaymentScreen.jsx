@@ -25,7 +25,7 @@ const PaymentScreen = ({ history }) => {
 
 	return (
 		<FormContainer>
-			{/**The steps simply mean highlighted steps that have been fulfilled */}
+			{/**The steps simply mean highlighted steps that have been fulfilled, if you don't match all criteria, you cannot see that screen. */}
 			<CheckoutSteps step1 step2 step3 />
 
 			<h1>Payment Method</h1>

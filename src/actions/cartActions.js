@@ -6,7 +6,8 @@ import {
 } from "./../constants/cartConstants";
 import axios from "axios";
 
-export const addToCart = (qty, id) => async (dispatch, getState) => {
+//parameter ordering is extremely important
+export const addToCart = (id, qty) => async (dispatch, getState) => {
 	//qty is a parameter
 	//fetch the individual product with id
 	const { data } = await axios.get(`/api/products/${id}`);

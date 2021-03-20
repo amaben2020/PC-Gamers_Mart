@@ -7,9 +7,11 @@ import FormContainer from "./FormContainer/FormContainer.js";
 const ShippingScreen = ({ history }) => {
 	const cart = useSelector((state) => state.cart);
 	const { shippingAdd } = cart;
+	console.log(shippingAdd);
 	const dispatch = useDispatch();
 
 	const [address, setAddress] = useState(shippingAdd.address);
+	console.log(address);
 	const [country, setCountry] = useState(shippingAdd.country);
 	const [state, setState] = useState(shippingAdd.state);
 	const [postalCode, setPostalCode] = useState(shippingAdd.postalCode);
@@ -19,6 +21,7 @@ const ShippingScreen = ({ history }) => {
 
 	const submitHandler = (e) => {
 		e.preventDefault();
+		//save the form values to localStorage
 		dispatch(
 			saveShippingAddress({
 				address,

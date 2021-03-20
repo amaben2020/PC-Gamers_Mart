@@ -11,8 +11,8 @@ import {
 	Card,
 	Image,
 } from "react-bootstrap";
-import { addToCart } from "./../../actions/cartActions.js";
-import { removeFromCart } from "./../../actions/cartActions.js";
+import { addToCart, removeFromCart } from "./../../actions/cartActions.js";
+
 const CartScreen = ({ match, location, history }) => {
 	const dispatch = useDispatch();
 	const cart = useSelector((state) => state.cart);
@@ -22,6 +22,7 @@ const CartScreen = ({ match, location, history }) => {
 	const qty = location.search ? Number(location.search.split("=")[1]) : 1;
 
 	const { cartItems } = cart;
+	console.log(cartItems);
 
 	useEffect(() => {
 		//we only wanna addToCart if there is a productId
@@ -46,7 +47,10 @@ const CartScreen = ({ match, location, history }) => {
 
 				{cartItems.length === 0 ? (
 					<ErrorMessage>
-						Your cart is empty <Link to="/">Please go back</Link>
+						Your cart is empty{" "}
+						<Link to="/">
+							<Button variant="outline-dark py-1"> Go back</Button>
+						</Link>
 					</ErrorMessage>
 				) : (
 					<ListGroup variant="flush">
