@@ -5,6 +5,9 @@ import {
 	ORDER_DETAILS_FAIL,
 	ORDER_DETAILS_REQUEST,
 	ORDER_DETAILS_SUCCESS,
+	ORDER_PAY_FAIL,
+	ORDER_PAY_REQUEST,
+	ORDER_PAY_SUCCESS,
 } from "./../constants/orderConstants";
 import axios from "axios";
 
@@ -63,7 +66,7 @@ export const payOrder = (orderId, paymentResult) => async (
 	getState
 ) => {
 	//id is the user that placed the order that would be sent from f.end to b.end
-	dispatch({ type: ORDER_DETAILS_REQUEST });
+	dispatch({ type: ORDER_PAY_REQUEST });
 	try {
 		//getting the userInfo i.e Token from state so you could access the user's profile
 		const {
@@ -83,10 +86,8 @@ export const payOrder = (orderId, paymentResult) => async (
 			paymentResult,
 			config
 		);
-
-		dispatch({ type: ORDER_DETAILS_SUCCESS, payload: data });
+		dispatch({ type: ORDER_PAY_SUCCESS, payload: data });
 	} catch (error) {
-		dispatch({ type: ORDER_DETAILS_FAIL, payload: error });
+		dispatch({ type: ORDER_PAY_FAIL, payload: error });
 	}
-	//where you store the token, username etc
 };

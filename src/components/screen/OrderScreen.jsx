@@ -1,7 +1,8 @@
 import { getOrderDetails } from "./../../actions/orderActions";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { saveShippingAddress } from "./../../actions/cartActions";
+import { PayPalButton } from "react-paypal-button-v2";
 import {
 	Form,
 	Button,
@@ -14,10 +15,14 @@ import {
 import Loading from "./../../messages/Loading";
 import ErrorMessage from "./../../messages/ErrorMessage";
 import CheckoutSteps from "./CheckoutSteps";
-import { createOrder } from "../../actions/orderActions";
+import { createOrder, payOrder } from "../../actions/orderActions";
 import { Link } from "react-router-dom";
 import axios from "axios";
+import { ORDER_PAY_RESET } from "./../../constants/orderConstants";
 const OrderScreen = ({ match }) => {
+	//creating a state that holds the sdk script when created
+	const [sdkReady, setSdkReady] = useState(false);
+
 	//to get the cart state
 
 	//extracting the ID from the url
@@ -28,17 +33,12 @@ const OrderScreen = ({ match }) => {
 	const { order, loading, error } = orderDetails;
 	console.log("This is order:", order);
 
-	const paymentMtd = useSelector((state) => state.cart.paymentMethod);
-	const { paymentMethod } = paymentMtd;
-	console.log(paymentMethod);
-
 	const pay = localStorage.getItem("paymentMethod")
 		? JSON.parse(localStorage.getItem("paymentMethod"))
 		: "";
 	console.log(pay);
 
 	const orderCreator = useSelector((state) => state.orderCreator);
-
 	const shippingAddress = useSelector((state) => state.cart.shippingAdd);
 	const {
 		address,
@@ -61,6 +61,15 @@ const OrderScreen = ({ match }) => {
 		);
 	}
 
+	const orderPay = useSelector((state) => state.orderPay);
+	const { loading: loadingPay, success: successPay } = orderPay;
+	console.log("ORDERPAY:", orderPay);
+
+	const successPaymentHandler = (paymentResult) => {
+		console.log("FROM PAYPAL:", paymentResult);
+		dispatch(payOrder(orderId, paymentResult));
+	};
+
 	const dispatch = useDispatch();
 	// console.log(cart.cartItems)//product, countInStock,name, price etc
 
@@ -68,10 +77,31 @@ const OrderScreen = ({ match }) => {
 	useEffect(() => {
 		//getting the clientId from backend
 		const addPayPalScript = async () => {
-			axios.get("/api/config/paypal");
+			const { data: clientId } = await axios.get("/api/config/paypal");
+			const script = document.createElement("script"); //this creates a script tag <script></script>
+			script.type = "text/javascript";
+			script.src = `https://www.paypal.com/sdk/js?client-id=${clientId}`;
+			script.async = true;
+			//when the component mounts with the SDK, lets set the SDK state to true
+			script.onload = () => {
+				setSdkReady(true);
+			};
+			//add the script to the body after it loads
+			document.body.appendChild(script);
+			//we now check from our orderPayReducer if success is true
 		};
 		addPayPalScript();
-		dispatch(getOrderDetails(orderId));
+		//This loads the order again but this time around its paid
+		if (!order || successPay) {
+			dispatch({ type: ORDER_PAY_RESET });
+			dispatch(getOrderDetails(orderId));
+		} else if (!order.isPaid) {
+			if (!window.paypal) {
+				addPayPalScript();
+			} else {
+				setSdkReady(true);
+			}
+		}
 	}, [dispatch, orderId]);
 
 	return (
@@ -128,9 +158,9 @@ const OrderScreen = ({ match }) => {
 									<p>
 										<strong>Method: </strong> {pay}
 									</p>
-									{order.isPaid ? (
+									{successPay ? (
 										<ErrorMessage variant="success">
-											Paid on {order.paidAt}
+											Paid by {order.user.name}
 										</ErrorMessage>
 									) : (
 										<ErrorMessage variant="danger">
@@ -182,7 +212,7 @@ const OrderScreen = ({ match }) => {
 										<ListGroup.Item>
 											<Row>
 												<Col>Items</Col>
-												<Col>${order.itemsPrice}</Col>
+												<Col> &#8358; {order.itemsPrice}</Col>
 											</Row>
 										</ListGroup.Item>
 										<ListGroup.Item>
@@ -204,6 +234,19 @@ const OrderScreen = ({ match }) => {
 											<ErrorMessage variant="danger"> {error}</ErrorMessage>
 										)}
 									</ListGroup.Item>
+									{!order.isPaid && ( //making sure the product hasn't been paid for
+										<ListGroup.Item>
+											{loadingPay && <Loading />}
+											{!sdkReady ? (
+												<Loading />
+											) : (
+												<PayPalButton
+													amount={order.itemsPrice}
+													onSuccess={successPaymentHandler}
+												/>
+											)}
+										</ListGroup.Item>
+									)}
 								</ListGroup>
 							</Card>
 						</Col>
