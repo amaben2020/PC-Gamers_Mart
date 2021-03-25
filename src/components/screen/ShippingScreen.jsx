@@ -9,9 +9,7 @@ const ShippingScreen = ({ history }) => {
 	const { shippingAdd } = cart;
 	console.log(shippingAdd);
 	const dispatch = useDispatch();
-
 	const [address, setAddress] = useState(shippingAdd.address);
-	console.log(address);
 	const [country, setCountry] = useState(shippingAdd.country);
 	const [state, setState] = useState(shippingAdd.state);
 	const [postalCode, setPostalCode] = useState(shippingAdd.postalCode);
@@ -39,7 +37,6 @@ const ShippingScreen = ({ history }) => {
 	return (
 		<FormContainer>
 			<h1>Shipping</h1>
-
 			<Form onSubmit={submitHandler}>
 				<Form.Group controlId="address">
 					<Form.Label>Address</Form.Label>

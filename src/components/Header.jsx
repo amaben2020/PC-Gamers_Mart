@@ -14,10 +14,10 @@ const Header = () => {
 	};
 	return (
 		<header className="shadow-lg mb-3">
-			<Navbar bg="dark" variant="dark" collapseOnSelect expand="lg">
+			<Navbar bg="light" variant="light" collapseOnSelect expand="lg">
 				<Container>
 					<LinkContainer to="/">
-						<Navbar.Brand>ProShop</Navbar.Brand>
+						<Navbar.Brand>Minimalist Shop</Navbar.Brand>
 					</LinkContainer>
 					<Navbar.Toggle aria-controls="basic-navbar-nav" />
 					<Navbar.Collapse id="basic-navbar-nav">

@@ -12,6 +12,8 @@ const PaymentScreen = ({ history }) => {
 
 	const [paymentMethod, setPaymentMethod] = useState("Paypal");
 
+	localStorage.setItem("paymentMethod", JSON.stringify(paymentMethod));
+
 	//if there's no shipping addres
 	if (!shippingAdd) {
 		history.push("/shipping");

@@ -12,6 +12,11 @@ import {
 	userRegisterReducer,
 	userUpdateProfileReducer,
 } from "./actions/userReducers";
+import {
+	orderReducers,
+	orderDetailsReducers,
+	orderPayReducer,
+} from "./actions/orderReducers";
 const reducer = combineReducers({
 	productList: productListReducer,
 	productDetails: productDetailsReducer,
@@ -20,6 +25,9 @@ const reducer = combineReducers({
 	userDetails: userDetailsReducer,
 	userRegister: userRegisterReducer,
 	userUpdateProfile: userUpdateProfileReducer,
+	orderCreator: orderReducers,
+	orderDetails: orderDetailsReducers,
+	orderPay: orderPayReducer,
 });
 
 //storing backend products/:id property in cartItems state
@@ -36,15 +44,20 @@ const shippingAddressFromStorage = localStorage.getItem("shippingAddress")
 	? JSON.parse(localStorage.getItem("shippingAddress"))
 	: {};
 
+const paymentMethodFromStorage = localStorage.getItem("paymentMethod")
+	? JSON.parse(localStorage.getItem("paymentMethod"))
+	: "";
+
 //Putting the cartItems in a global state
 const initialState = {
 	cart: {
 		cartItems: cartItemsFromStorage,
-		shippingAddress: shippingAddressFromStorage,
+		shippingAdd: shippingAddressFromStorage,
+		paymentMethod: paymentMethodFromStorage,
 	},
 	userLogin: { userInfo: userInfoFromStorage },
 };
-console.log(initialState.cart.cartItems);
+console.log(initialState.cart.paymentMethod);
 
 const middleware = [thunk];
 const store = createStore(

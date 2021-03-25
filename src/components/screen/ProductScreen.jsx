@@ -17,7 +17,6 @@ import ErrorMessage from "../../messages/ErrorMessage";
 const ProductScreen = ({ match, history }) => {
 	const dispatch = useDispatch();
 	const productDetails = useSelector((state) => state.productDetails);
-	console.log(productDetails);
 	const [qty, setQty] = useState(1);
 	const { product, loading, error } = productDetails;
 	//Render the product based on IDs. FLUID: to keep in container
@@ -56,7 +55,7 @@ const ProductScreen = ({ match, history }) => {
 									text={`${product.numReviews} reviews`}
 								/>
 							</ListGroup.Item>
-							<ListGroup.Item>Price: ${product.price}</ListGroup.Item>
+							<ListGroup.Item>Price: &#8358;{product.price}</ListGroup.Item>
 							<ListGroup.Item>
 								Description: {product.description}
 							</ListGroup.Item>
@@ -69,7 +68,7 @@ const ProductScreen = ({ match, history }) => {
 									<Row>
 										<Col>Price:</Col>
 										<Col>
-											<strong>${product.price}</strong>
+											<strong>&#8358;{product.price}</strong>
 										</Col>
 									</Row>
 								</ListGroup.Item>

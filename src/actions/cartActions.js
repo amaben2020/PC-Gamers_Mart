@@ -6,7 +6,7 @@ import {
 } from "./../constants/cartConstants";
 import axios from "axios";
 
-//parameter ordering is extremely important
+//parameter ordering is extremely important /jcsj83899/qty=3
 export const addToCart = (id, qty) => async (dispatch, getState) => {
 	//qty is a parameter
 	//fetch the individual product with id
