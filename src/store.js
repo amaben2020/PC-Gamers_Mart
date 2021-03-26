@@ -16,6 +16,7 @@ import {
 	orderReducers,
 	orderDetailsReducers,
 	orderPayReducer,
+	orderListMyReducer,
 } from "./actions/orderReducers";
 const reducer = combineReducers({
 	productList: productListReducer,
@@ -28,6 +29,7 @@ const reducer = combineReducers({
 	orderCreator: orderReducers,
 	orderDetails: orderDetailsReducers,
 	orderPay: orderPayReducer,
+	orderListMy: orderListMyReducer,
 });
 
 //storing backend products/:id property in cartItems state

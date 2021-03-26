@@ -5,6 +5,9 @@ import {
 	ORDER_DETAILS_FAIL,
 	ORDER_DETAILS_REQUEST,
 	ORDER_DETAILS_SUCCESS,
+	ORDER_LIST_MY_FAIL,
+	ORDER_LIST_MY_REQUEST,
+	ORDER_LIST_MY_SUCCESS,
 	ORDER_PAY_FAIL,
 	ORDER_PAY_REQUEST,
 	ORDER_PAY_SUCCESS,
@@ -89,5 +92,32 @@ export const payOrder = (orderId, paymentResult) => async (
 		dispatch({ type: ORDER_PAY_SUCCESS, payload: data });
 	} catch (error) {
 		dispatch({ type: ORDER_PAY_FAIL, payload: error });
+	}
+};
+
+export const listMyOrders = () => async (dispatch, getState) => {
+	//id is the user that placed the order that would be sent from f.end to b.end
+	dispatch({ type: ORDER_LIST_MY_REQUEST });
+	try {
+		//getting the userInfo i.e Token from state so you could access the user's profile
+		const {
+			userLogin: { userInfo },
+		} = getState();
+
+		//you dont need Content-Type cos you're just receiving something fro b.end
+		const config = {
+			headers: {
+				Authorization: `Bearer ${userInfo.token} `,
+			},
+		};
+		//the order {} object field must have same info with backend
+		const { data } = await axios.get(
+			`/api/orders/myorders`,
+
+			config
+		);
+		dispatch({ type: ORDER_LIST_MY_SUCCESS, payload: data });
+	} catch (error) {
+		dispatch({ type: ORDER_LIST_MY_FAIL, payload: error });
 	}
 };

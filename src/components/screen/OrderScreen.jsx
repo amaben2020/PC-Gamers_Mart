@@ -23,8 +23,6 @@ const OrderScreen = ({ match }) => {
 	//creating a state that holds the sdk script when created
 	const [sdkReady, setSdkReady] = useState(false);
 
-	//to get the cart state
-
 	//extracting the ID from the url
 	const orderId = match.params.id;
 
@@ -63,7 +61,7 @@ const OrderScreen = ({ match }) => {
 
 	const orderPay = useSelector((state) => state.orderPay);
 	const { loading: loadingPay, success: successPay } = orderPay;
-	console.log("ORDERPAY:", orderPay);
+	//console.log("ORDERPAY:", orderPay);
 
 	const successPaymentHandler = (paymentResult) => {
 		console.log("FROM PAYPAL:", paymentResult);
@@ -103,6 +101,9 @@ const OrderScreen = ({ match }) => {
 			}
 		}
 	}, [dispatch, orderId]);
+
+	// localStorage.setItem("success", JSON.parse(successPay));
+	// console.log("successPay:", successPay);
 
 	return (
 		<>

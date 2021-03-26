@@ -36,6 +36,8 @@ const PlaceOrderScreen = ({ history, match }) => {
 	cart.itemsPrice = addDecimals(
 		cart.cartItems.reduce((acc, item) => acc + item.price * item.qty, 0)
 	);
+
+	localStorage.setItem("cartItemPrice", cart.itemsPrice);
 	cart.shippingPrice = addDecimals(cart.itemsPrice < 10000 ? 0 : 10000);
 
 	//calculating the tax price

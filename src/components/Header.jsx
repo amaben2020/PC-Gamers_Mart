@@ -17,7 +17,9 @@ const Header = () => {
 			<Navbar bg="light" variant="light" collapseOnSelect expand="lg">
 				<Container>
 					<LinkContainer to="/">
-						<Navbar.Brand>Minimalist Shop</Navbar.Brand>
+						<Navbar.Brand>
+							Minimalist Shop <i className="fas fa-shopping-cart"></i>
+						</Navbar.Brand>
 					</LinkContainer>
 					<Navbar.Toggle aria-controls="basic-navbar-nav" />
 					<Navbar.Collapse id="basic-navbar-nav">
