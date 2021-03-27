@@ -13,6 +13,9 @@ import {
 	USER_UPDATE_PROFILE_SUCCESS,
 	USER_UPDATE_PROFILE_FAIL,
 	USER_DETAILS_RESET,
+	USER_LIST_REQUEST,
+	USER_LIST_SUCCESS,
+	USER_LIST_FAIL,
 } from "./../constants/userConstants";
 import axios from "axios";
 import { ORDER_LIST_MY_RESET } from "../constants/orderConstants";
@@ -111,6 +114,28 @@ export const updateUserProfile = (user) => async (dispatch, getState) => {
 		dispatch({ type: USER_UPDATE_PROFILE_FAIL, payload: error });
 	}
 	//where you store the token, username etc
+};
+
+//Listing all users for the admin
+export const listUsers = () => async (dispatch, getState) => {
+	dispatch({ type: USER_LIST_REQUEST });
+	try {
+		//getting the userInfo i.e Token from state so you could access the user's profile
+		const {
+			userLogin: { userInfo },
+		} = getState();
+
+		const config = {
+			headers: {
+				Authorization: `Bearer ${userInfo.token} `,
+			},
+		};
+		const { data } = await axios.GET(`/api/users`, config);
+
+		dispatch({ type: USER_LIST_SUCCESS, payload: data });
+	} catch (error) {
+		dispatch({ type: USER_LIST_FAIL, payload: error });
+	}
 };
 
 export const logout = () => (dispatch) => {

@@ -11,6 +11,7 @@ import {
 	userDetailsReducer,
 	userRegisterReducer,
 	userUpdateProfileReducer,
+	userListReducer,
 } from "./actions/userReducers";
 import {
 	orderReducers,
@@ -30,6 +31,7 @@ const reducer = combineReducers({
 	orderDetails: orderDetailsReducers,
 	orderPay: orderPayReducer,
 	orderListMy: orderListMyReducer,
+	userList: userListReducer,
 });
 
 //storing backend products/:id property in cartItems state
