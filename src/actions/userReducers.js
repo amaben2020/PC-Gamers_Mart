@@ -187,3 +187,28 @@ export const userDeleteReducer = (state = {}, action) => {
 			return state;
 	}
 };
+
+export const userUpdateReducer = (state = { user: {} }, action) => {
+	switch (action.type) {
+		case USER_UPDATE_PROFILE_REQUEST:
+			return {
+				loading: true,
+			};
+
+		case USER_DELETE_SUCCESS:
+			return {
+				loading: false,
+				success: true,
+				user: action.payload,
+			};
+
+		case USER_DELETE_FAIL:
+			return {
+				loading: false,
+				error: action.payload,
+			};
+
+		default:
+			return state;
+	}
+};

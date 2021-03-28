@@ -20,8 +20,14 @@ export const USER_LIST_REQUEST = "USER_LIST_REQUEST";
 export const USER_LIST_RESET = "USER_LIST_RESET";
 export const USER_LIST_FAIL = "USER_LIST_FAIL";
 
-//Deletion
+//Deletion as an admin
 export const USER_DELETE_SUCCESS = "USER_DELETE_SUCCESS";
 export const USER_DELETE_REQUEST = "USER_DELETE_REQUEST";
 export const USER_DELETE_RESET = "USER_DELETE_RESET";
 export const USER_DELETE_FAIL = "USER_DELETE_FAIL";
+
+//Updating users as an admin and even making a user an admin
+export const USER_UPDATE_SUCCESS = "USER_UPDATE_SUCCESS";
+export const USER_UPDATE_ERROR = "USER_UPDATE_ERROR";
+export const USER_UPDATE_FAIL = "USER_UPDATE_FAIL";
+export const USER_UPDATE_RESET = "USER_UPDATE_RESET";

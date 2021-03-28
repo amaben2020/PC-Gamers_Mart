@@ -17,6 +17,9 @@ import {
 	USER_LIST_SUCCESS,
 	USER_LIST_FAIL,
 	USER_LIST_RESET,
+	USER_DELETE_REQUEST,
+	USER_DELETE_SUCCESS,
+	USER_DELETE_FAIL,
 } from "./../constants/userConstants";
 import axios from "axios";
 import { ORDER_LIST_MY_RESET } from "../constants/orderConstants";
@@ -74,14 +77,20 @@ export const register = (name, email, password) => async (dispatch) => {
 export const getUserDetails = (id) => async (dispatch, getState) => {
 	try {
 		dispatch({ type: USER_DETAILS_REQUEST });
-
 		// const userInfo = getState().userLogin.userInfo;
-
 		//getting the userInfo i.e Token from state so you could access the user's profile
 		const {
 			userLogin: { userInfo },
 		} = getState();
-		console.log(userInfo);
+		//console.log(userInfo); GETs the entire user details in Database createdAt: "2021-03-16T10:11:06.029Z"
+		//email: "jane@example.com";
+		//isAdmin: false;
+		//name: "Jane Doe";
+		//password: "$2a$10$FQVJOoWGREin5tE3XRvRguXGURg0Zi5nVaxI6BNVpGBUouuMeTOJG";
+		//updatedAt: "2021-03-16T10:11:06.029Z";
+		//__v: 0;
+		//_id: "6050843a7d68cf4404a0323e";
+
 		const config = {
 			headers: {
 				Authorization: `Bearer ${userInfo.token}`,
@@ -132,10 +141,40 @@ export const listUsers = () => async (dispatch, getState) => {
 			},
 		};
 		const { data } = await axios.get("/api/users", config);
-		console.log(data);
+		//	console.log(data); The type of data we receive
+		//createdAt: "2021-03-16T10:11:06.029Z"
+		//email: "jane@example.com"
+		//isAdmin: false
+		//name: "Jane Doe"
+		//password: "$2a$10$FQVJOoWGREin5tE3XRvRguXGURg0Zi5nVaxI6BNVpGBUouuMeTOJG"
+		//updatedAt: "2021-03-16T10:11:06.029Z"
+		//__v: 0
+		//_id: "6050843a7d68cf4404a0323e"
 		dispatch({ type: USER_LIST_SUCCESS, payload: data });
 	} catch (error) {
 		dispatch({ type: USER_LIST_FAIL, payload: error });
+	}
+};
+
+export const deleteUser = (id) => async (dispatch, getState) => {
+	dispatch({ type: USER_DELETE_REQUEST });
+	try {
+		//getting the userInfo i.e Token from state so you could access the user's profile
+		const {
+			userLogin: { userInfo },
+		} = getState();
+
+		const config = {
+			headers: {
+				Authorization: `Bearer ${userInfo.token} `,
+			},
+		};
+		//no need for data, we just want a successful deletion
+		await axios.delete(`/api/users/${id}`, config);
+
+		dispatch({ type: USER_DELETE_SUCCESS });
+	} catch (error) {
+		dispatch({ type: USER_DELETE_FAIL, payload: error });
 	}
 };
 

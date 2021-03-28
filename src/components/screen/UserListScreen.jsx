@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import ErrorMessage from "../../messages/ErrorMessage";
 import { Button, Table } from "react-bootstrap";
 import Loading from "../../messages/Loading";
+import { deleteUser } from "./../../actions/userActions";
 import { listUsers } from "../../actions/userActions";
 import { LinkContainer } from "react-router-bootstrap";
 const UserListScreen = ({ history }) => {
@@ -14,6 +15,9 @@ const UserListScreen = ({ history }) => {
 	const userLogin = useSelector((state) => state.userLogin);
 	const { userInfo } = userLogin;
 
+	const userDelete = useSelector((state) => state.userDelete);
+	const { success: successDelete } = userDelete;
+
 	useEffect(() => {
 		//only display or list all users if the user is an admin
 		if (userInfo && userInfo.isAdmin) {
@@ -21,10 +25,14 @@ const UserListScreen = ({ history }) => {
 		} else {
 			history.push("/login");
 		}
-	}, [dispatch]);
+	}, [dispatch, successDelete, userInfo]);
 
-	const deleteHandler = () => {
-		console.log("delete");
+	const deleteHandler = (id) => {
+		if (window.confirm("Are you sure")) {
+			dispatch(deleteUser(id));
+		} else {
+			<ErrorMessage variant="danger"> Not Deleted</ErrorMessage>;
+		}
 	};
 	return (
 		<div>
@@ -62,20 +70,19 @@ const UserListScreen = ({ history }) => {
 									)}
 								</td>
 								<td>
-									<LinkContainer to={`/user/${user._id}/edit`}>
+									<LinkContainer to={`/admin/user/${user._id}/edit`}>
 										<Button variant="light" className="btn-sm">
 											<i className="fas fa-edit"></i>
 										</Button>
 									</LinkContainer>
-									<LinkContainer to={`/user/${user._id}/edit`}>
-										<Button
-											variant="trash"
-											className="btn-sm"
-											onClick={() => deleteHandler(user.id)}
-										>
-											<i style={{ color: "red" }} className="fas fa-trash"></i>
-										</Button>
-									</LinkContainer>
+
+									<Button
+										variant="trash"
+										className="btn-sm"
+										onClick={() => deleteHandler(user._id)}
+									>
+										<i style={{ color: "red" }} className="fas fa-trash"></i>
+									</Button>
 								</td>
 							</tr>
 						))}

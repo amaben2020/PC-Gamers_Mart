@@ -12,6 +12,7 @@ import {
 	userRegisterReducer,
 	userUpdateProfileReducer,
 	userListReducer,
+	userDeleteReducer,
 } from "./actions/userReducers";
 import {
 	orderReducers,
@@ -27,6 +28,7 @@ const reducer = combineReducers({
 	userDetails: userDetailsReducer,
 	userRegister: userRegisterReducer,
 	userList: userListReducer,
+	userDelete: userDeleteReducer,
 	userUpdateProfile: userUpdateProfileReducer,
 	orderCreator: orderReducers,
 	orderDetails: orderDetailsReducers,
@@ -61,7 +63,7 @@ const initialState = {
 	},
 	userLogin: { userInfo: userInfoFromStorage },
 };
-console.log(initialState.cart.paymentMethod);
+//console.log(initialState.cart.paymentMethod);
 
 const middleware = [thunk];
 const store = createStore(
