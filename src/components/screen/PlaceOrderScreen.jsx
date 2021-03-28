@@ -1,15 +1,7 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { saveShippingAddress } from "./../../actions/cartActions";
-import {
-	Form,
-	Button,
-	Col,
-	ListGroup,
-	Image,
-	Card,
-	Row,
-} from "react-bootstrap";
+
+import { Button, Col, ListGroup, Image, Card, Row } from "react-bootstrap";
 import ErrorMessage from "./../../messages/ErrorMessage";
 import CheckoutSteps from "./CheckoutSteps";
 import { createOrder } from "../../actions/orderActions";
@@ -17,7 +9,7 @@ import { createOrder } from "../../actions/orderActions";
 import { Link } from "react-router-dom";
 const PlaceOrderScreen = ({ history, match }) => {
 	const orderCreator = useSelector((state) => state.orderCreator);
-	const { order, error, success, loading } = orderCreator;
+	const { order, error, success } = orderCreator;
 	console.log("Customer Order Created:", order);
 
 	//getting the shippingAddress info
@@ -50,7 +42,7 @@ const PlaceOrderScreen = ({ history, match }) => {
 		if (success) {
 			history.push(`/order/${order._id}`);
 		}
-	}, [history, success, orderId]);
+	}, [history, success, orderId]); //order._id
 
 	const placeOrderHandler = () => {
 		//where you dispatch the place order action to backend by sending the values dia

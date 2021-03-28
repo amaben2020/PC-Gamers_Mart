@@ -128,7 +128,11 @@ export const userUpdateProfileReducer = (state = {}, action = {}) => {
 	}
 };
 
-export const userListReducer = (state = { users: [] }, action = {}) => {
+const initialStatee = {
+	users: [],
+};
+//Getting all user information for admin user
+export const userListReducer = (state = initialStatee, action) => {
 	switch (action.type) {
 		case USER_LIST_REQUEST:
 			return {
@@ -139,7 +143,6 @@ export const userListReducer = (state = { users: [] }, action = {}) => {
 			return {
 				loading: false,
 				users: action.payload,
-				success: true,
 			};
 
 		case USER_LIST_FAIL:

@@ -26,12 +26,12 @@ const reducer = combineReducers({
 	userLogin: userLoginReducer,
 	userDetails: userDetailsReducer,
 	userRegister: userRegisterReducer,
+	userList: userListReducer,
 	userUpdateProfile: userUpdateProfileReducer,
 	orderCreator: orderReducers,
 	orderDetails: orderDetailsReducers,
 	orderPay: orderPayReducer,
 	orderListMy: orderListMyReducer,
-	userList: userListReducer,
 });
 
 //storing backend products/:id property in cartItems state

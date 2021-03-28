@@ -1,21 +1,12 @@
 import { getOrderDetails } from "./../../actions/orderActions";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { saveShippingAddress } from "./../../actions/cartActions";
+
 import { PayPalButton } from "react-paypal-button-v2";
-import {
-	Form,
-	Button,
-	Col,
-	ListGroup,
-	Image,
-	Card,
-	Row,
-} from "react-bootstrap";
+import { Col, ListGroup, Image, Card, Row } from "react-bootstrap";
 import Loading from "./../../messages/Loading";
 import ErrorMessage from "./../../messages/ErrorMessage";
-import CheckoutSteps from "./CheckoutSteps";
-import { createOrder, payOrder } from "../../actions/orderActions";
+import { payOrder } from "../../actions/orderActions";
 import { Link } from "react-router-dom";
 import axios from "axios";
 import { ORDER_PAY_RESET } from "./../../constants/orderConstants";
@@ -36,17 +27,7 @@ const OrderScreen = ({ match }) => {
 		: "";
 	console.log(pay);
 
-	const orderCreator = useSelector((state) => state.orderCreator);
 	const shippingAddress = useSelector((state) => state.cart.shippingAdd);
-	const {
-		address,
-		city,
-		country,
-		homeLandmark,
-		state,
-		lga,
-		postalCode,
-	} = shippingAddress;
 
 	if (!loading) {
 		const addDecimals = (num) => {

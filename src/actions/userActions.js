@@ -130,8 +130,8 @@ export const listUsers = () => async (dispatch, getState) => {
 				Authorization: `Bearer ${userInfo.token} `,
 			},
 		};
-		const { data } = await axios.GET(`/api/users`, config);
-
+		const { data } = await axios.get("/api/users", config);
+		console.log(data);
 		dispatch({ type: USER_LIST_SUCCESS, payload: data });
 	} catch (error) {
 		dispatch({ type: USER_LIST_FAIL, payload: error });
@@ -143,7 +143,6 @@ export const logout = () => (dispatch) => {
 	dispatch({ type: USER_DETAILS_RESET });
 	dispatch({ type: ORDER_LIST_MY_RESET });
 	dispatch({ type: CART_ITEM_RESET });
-
 	localStorage.removeItem("userInfo");
 	localStorage.removeItem("cartItems");
 };
