@@ -5,7 +5,7 @@ import { Button, Table } from "react-bootstrap";
 import Loading from "../../messages/Loading";
 import { listUsers } from "../../actions/userActions";
 import { LinkContainer } from "react-router-bootstrap";
-const UserListScreen = () => {
+const UserListScreen = ({ history }) => {
 	const dispatch = useDispatch();
 	const userList = useSelector((store) => store.userList);
 	//for all users
@@ -15,7 +15,12 @@ const UserListScreen = () => {
 	const { userInfo } = userLogin;
 
 	useEffect(() => {
-		dispatch(listUsers());
+		//only display or list all users if the user is an admin
+		if (userInfo && userInfo.isAdmin) {
+			dispatch(listUsers());
+		} else {
+			history.push("/login");
+		}
 	}, [dispatch]);
 
 	const deleteHandler = () => {
@@ -71,4 +76,14 @@ const UserListScreen = () => {
 											<i style={{ color: "red" }} className="fas fa-trash"></i>
 										</Button>
 									</LinkContainer>
-								</td>
+								</td>
+							</tr>
+						))}
+					</tbody>
+				</Table>
+			)}
+		</div>
+	);
+};
+
+export default UserListScreen;
