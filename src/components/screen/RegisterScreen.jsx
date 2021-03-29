@@ -7,10 +7,11 @@ import Loading from "./../../messages/Loading";
 import FormContainer from "./FormContainer/FormContainer.js";
 import { register } from "./../../actions/userActions";
 
-const LoginScreen = ({ location, history }) => {
+const RegisterScreen = ({ location, history }) => {
 	const [password, setPassword] = useState("");
 	const [email, setEmail] = useState("");
 	const [name, setName] = useState("");
+	//message state is created to render passwords do not match info
 	const [message, setMessage] = useState(null);
 	const [confirmPassword, setConfirmPassword] = useState("");
 	const dispatch = useDispatch();
@@ -101,4 +102,4 @@ const LoginScreen = ({ location, history }) => {
 	);
 };
 
-export default LoginScreen;
+export default RegisterScreen;
