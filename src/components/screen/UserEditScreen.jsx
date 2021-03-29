@@ -15,7 +15,7 @@ const UserEditScreen = ({ location, history, match }) => {
 	const [isAdmin, setIsAdmin] = useState(false);
 	const [email, setEmail] = useState("");
 	const [name, setName] = useState("");
-	const [message, setMessage] = useState(null);
+
 	const dispatch = useDispatch();
 
 	//getting the user id so it mimicks postman i.e PUT http://localhost:9000/api/users/6060767188f29d2030440c22
