@@ -5,9 +5,10 @@ import { Link } from "react-router-dom";
 import { Form, Button } from "react-bootstrap";
 import Loading from "./../../messages/Loading";
 import FormContainer from "./FormContainer/FormContainer.js";
-import { register } from "./../../actions/userActions";
+import { updateUser } from "./../../actions/userActions";
 import { getUserDetails } from "./../../actions/userActions";
 import { Row } from "react-bootstrap";
+import { USER_UPDATE_RESET } from "../../constants/userConstants.js";
 // getUserDetails:  createdAt,email,isAdmin: false,name: "Jane Doe",updatedAt,_id excluding token cos we used .select('-password) in the backend
 
 const UserEditScreen = ({ location, history, match }) => {
@@ -20,30 +21,45 @@ const UserEditScreen = ({ location, history, match }) => {
 	//getting the user id so it mimicks postman i.e PUT http://localhost:9000/api/users/6060767188f29d2030440c22
 	const userId = match.params.id;
 
-	//Redirect moves you to the homepage '/' when you successfully login
-	const redirect = location.search ? location.search.split("=")[1] : "/";
-	console.log(redirect);
-	console.log(location);
-
 	const userDetails = useSelector((state) => state.userDetails);
 	const { loading, error, user } = userDetails;
 	console.log(user);
 
+	const userUpdate = useSelector((state) => state.userUpdate);
+	const {
+		loading: loadingUpdate,
+		error: errorUpdate,
+		success: successUpdate,
+	} = userUpdate;
+
 	const submitHandler = (e) => {
 		e.preventDefault();
+		dispatch(
+			updateUser({
+				_id: userId,
+				name,
+				email,
+				isAdmin,
+			})
+		);
 	};
 
-	//This useEffecr simply makes the data available for the user's information that would be updated
+	//This useEffect simply makes the data available for the user's information that would be updated
 	useEffect(() => {
-		//if there isnt a username in the name field or the userid in the database doesnt match with the one we selected.... kinda impossible but just making sure all is well, the display the userDetails from backend for that user
-		if (!user.name || user._id !== userId) {
-			dispatch(getUserDetails(userId));
+		// if the update is successful, update the user details and redirect to userlist
+		if (successUpdate) {
+			history.push("/admin/userlist");
 		} else {
-			setName(user.name);
-			setEmail(user.email);
-			setIsAdmin(user.isAdmin);
+			//if there isnt a username in the name field or the userid in the database doesnt match with the one we selected.... kinda impossible but just making sure all is well, the display the userDetails from backend for that user
+			if (!user.name || user._id !== userId) {
+				dispatch(getUserDetails(userId));
+			} else {
+				setName(user.name);
+				setEmail(user.email);
+				setIsAdmin(user.isAdmin);
+			}
 		}
-	}, [user, dispatch, user._id]);
+	}, [user, dispatch, userId, successUpdate, history]);
 
 	return (
 		<>
@@ -53,6 +69,10 @@ const UserEditScreen = ({ location, history, match }) => {
 			</Link>
 			<FormContainer>
 				<h1> Edit User</h1>
+				{loadingUpdate && <Loading />}
+				{errorUpdate && (
+					<ErrorMessage variant="danger">{errorUpdate}</ErrorMessage>
+				)}
 				{loading ? (
 					<Loading />
 				) : error ? (

@@ -20,6 +20,9 @@ import {
 	USER_DELETE_REQUEST,
 	USER_DELETE_SUCCESS,
 	USER_DELETE_FAIL,
+	USER_UPDATE_REQUEST,
+	USER_UPDATE_SUCCESS,
+	USER_UPDATE_FAIL,
 } from "./../constants/userConstants";
 import axios from "axios";
 import { ORDER_LIST_MY_RESET } from "../constants/orderConstants";
@@ -175,6 +178,31 @@ export const deleteUser = (id) => async (dispatch, getState) => {
 		dispatch({ type: USER_DELETE_SUCCESS });
 	} catch (error) {
 		dispatch({ type: USER_DELETE_FAIL, payload: error });
+	}
+};
+
+export const updateUser = (user) => async (dispatch, getState) => {
+	dispatch({ type: USER_UPDATE_REQUEST });
+	try {
+		//getting the userInfo i.e Token from state so you could access the user's profile
+		const {
+			userLogin: { userInfo },
+		} = getState();
+
+		const config = {
+			headers: {
+				"Content-Type": "application/json",
+				Authorization: `Bearer ${userInfo.token} `,
+			},
+		};
+		// user._id is from the database, user is the object we wanna send to database for updating
+		const { data } = await axios.put(`/api/users/${user._id}`, user, config);
+		dispatch({ type: USER_UPDATE_SUCCESS, payload: data });
+
+		//WE ALSO WANNA UPDATE THE USER'S DETAIL WITH THIS INFO
+		dispatch({ type: USER_DETAILS_SUCCESS, payload: data });
+	} catch (error) {
+		dispatch({ type: USER_UPDATE_FAIL, payload: error });
 	}
 };
 
