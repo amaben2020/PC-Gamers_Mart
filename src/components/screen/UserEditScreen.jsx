@@ -21,9 +21,9 @@ const UserEditScreen = ({ location, history, match }) => {
 	//getting the user id so it mimicks postman i.e PUT http://localhost:9000/api/users/6060767188f29d2030440c22
 	const userId = match.params.id;
 
-	const userDetails = useSelector((state) => state.userDetails);
-	const { loading, error, user } = userDetails;
-	console.log(userDetails);
+	// const userDetails = useSelector((state) => state.userDetails);
+	// const { loading, error, user } = userDetails;
+	// console.log(userDetails);
 
 	const adminProfileList = useSelector((state) => state.adminProfileList);
 	const {
@@ -31,8 +31,8 @@ const UserEditScreen = ({ location, history, match }) => {
 		error: errorAdminProfileEdit,
 		user: userAdminProfileEdit,
 	} = adminProfileList;
-	console.log(userDetails);
-	console.log(userAdminProfileEdit.name);
+	//console.log(userDetails);
+	//console.log(userAdminProfileEdit.name);
 
 	const userUpdate = useSelector((state) => state.userUpdate);
 	const {
@@ -72,7 +72,7 @@ const UserEditScreen = ({ location, history, match }) => {
 				setIsAdmin(userAdminProfileEdit.isAdmin);
 			}
 		}
-	}, [user, dispatch, userId, successUpdate, history, userAdminProfileEdit]);
+	}, [dispatch, userId, successUpdate, history, userAdminProfileEdit]);
 
 	return (
 		<>
@@ -86,10 +86,10 @@ const UserEditScreen = ({ location, history, match }) => {
 				{errorUpdate && (
 					<ErrorMessage variant="danger">{errorUpdate}</ErrorMessage>
 				)}
-				{loading ? (
+				{loadingAdminProfileEdit ? (
 					<Loading />
-				) : error ? (
-					<ErrorMessage variant="danger"> {error}</ErrorMessage>
+				) : errorAdminProfileEdit ? (
+					<ErrorMessage variant="danger"> {errorAdminProfileEdit}</ErrorMessage>
 				) : (
 					<Form onSubmit={submitHandler}>
 						<Form.Group controlId="name">
