@@ -17,12 +17,9 @@ const LoginScreen = ({ location, history }) => {
 	const userDetails = useSelector((state) => state.userDetails);
 	//user is the state of our userDetailsReducer
 	const { loading, error, user } = userDetails;
-
 	const itemsPrice = localStorage.getItem("cartItemPrice");
-
 	const orderListMy = useSelector((state) => state.orderListMy);
 	const { orders, loading: loadingOrders, error: errorOrders } = orderListMy;
-	console.log("ORDERS SCREEN DATA:", orders);
 
 	useEffect(() => {
 		dispatch(listMyOrders());
@@ -40,6 +37,7 @@ const LoginScreen = ({ location, history }) => {
 			history.push("/login");
 		} else {
 			if (!user.name) {
+				//i.e /api/users/profile
 				dispatch(getUserDetails("profile"));
 			} else {
 				setName(user.name);

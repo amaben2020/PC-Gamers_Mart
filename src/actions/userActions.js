@@ -23,6 +23,9 @@ import {
 	USER_UPDATE_REQUEST,
 	USER_UPDATE_SUCCESS,
 	USER_UPDATE_FAIL,
+	USER_ADMIN_REQUEST,
+	USER_ADMIN_SUCCESS,
+	USER_ADMIN_FAIL,
 } from "./../constants/userConstants";
 import axios from "axios";
 import { ORDER_LIST_MY_RESET } from "../constants/orderConstants";
@@ -99,6 +102,7 @@ export const getUserDetails = (id) => async (dispatch, getState) => {
 				Authorization: `Bearer ${userInfo.token}`,
 			},
 		};
+		//isnt this ${id} meant to be profile???
 		const { data } = await axios.get(`/api/users/${id}`, config);
 
 		dispatch({ type: USER_DETAILS_SUCCESS, payload: data });
@@ -197,12 +201,34 @@ export const updateUser = (user) => async (dispatch, getState) => {
 		};
 		// user._id is from the database, user is the object we wanna send to database for updating
 		const { data } = await axios.put(`/api/users/${user._id}`, user, config);
-		dispatch({ type: USER_UPDATE_SUCCESS, payload: data });
-
+		dispatch({ type: USER_UPDATE_SUCCESS });
 		//WE ALSO WANNA UPDATE THE USER'S DETAIL WITH THIS INFO
 		dispatch({ type: USER_DETAILS_SUCCESS, payload: data });
 	} catch (error) {
 		dispatch({ type: USER_UPDATE_FAIL, payload: error });
+	}
+};
+
+//
+export const getUserForAdmin = (id) => async (dispatch, getState) => {
+	dispatch({ type: USER_ADMIN_REQUEST });
+	try {
+		//getting the userInfo i.e Token from state so you could access the user's profile
+		const {
+			userLogin: { userInfo },
+		} = getState();
+
+		const config = {
+			headers: {
+				Authorization: `Bearer ${userInfo.token} `,
+			},
+		};
+		// user._id is from the database, user is the object we wanna send to database for updating
+		const { data } = await axios.get(`/api/users/profile/${id}`, config);
+		dispatch({ type: USER_ADMIN_SUCCESS, payload: data });
+		//dispatch({ type: USER_DETAILS_SUCCESS, payload: data });
+	} catch (error) {
+		dispatch({ type: USER_ADMIN_FAIL, payload: error });
 	}
 };
 

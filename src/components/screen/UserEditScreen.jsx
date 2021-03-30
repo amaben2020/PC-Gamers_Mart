@@ -6,7 +6,7 @@ import { Form, Button } from "react-bootstrap";
 import Loading from "./../../messages/Loading";
 import FormContainer from "./FormContainer/FormContainer.js";
 import { updateUser } from "./../../actions/userActions";
-import { getUserDetails } from "./../../actions/userActions";
+import { getUserDetails, getUserForAdmin } from "./../../actions/userActions";
 import { Row } from "react-bootstrap";
 import { USER_UPDATE_RESET } from "../../constants/userConstants.js";
 // getUserDetails:  createdAt,email,isAdmin: false,name: "Jane Doe",updatedAt,_id excluding token cos we used .select('-password) in the backend
@@ -23,7 +23,16 @@ const UserEditScreen = ({ location, history, match }) => {
 
 	const userDetails = useSelector((state) => state.userDetails);
 	const { loading, error, user } = userDetails;
-	console.log(user);
+	console.log(userDetails);
+
+	const adminProfileList = useSelector((state) => state.adminProfileList);
+	const {
+		loading: loadingAdminProfileEdit,
+		error: errorAdminProfileEdit,
+		user: userAdminProfileEdit,
+	} = adminProfileList;
+	console.log(userDetails);
+	console.log(userAdminProfileEdit.name);
 
 	const userUpdate = useSelector((state) => state.userUpdate);
 	const {
@@ -48,18 +57,22 @@ const UserEditScreen = ({ location, history, match }) => {
 	useEffect(() => {
 		// if the update is successful, update the user details and redirect to userlist
 		if (successUpdate) {
+			//reset the state after update is successful and move admin to /userlist
+			dispatch({ type: USER_UPDATE_RESET });
 			history.push("/admin/userlist");
 		} else {
 			//if there isnt a username in the name field or the userid in the database doesnt match with the one we selected.... kinda impossible but just making sure all is well, the display the userDetails from backend for that user
-			if (!user.name || user._id !== userId) {
-				dispatch(getUserDetails(userId));
+			if (!userAdminProfileEdit.name || userAdminProfileEdit._id !== userId) {
+				dispatch(getUserForAdmin(userId));
+
+				//dispatch(getUserDetails(user._id));
 			} else {
-				setName(user.name);
-				setEmail(user.email);
-				setIsAdmin(user.isAdmin);
+				setName(userAdminProfileEdit.name);
+				setEmail(userAdminProfileEdit.email);
+				setIsAdmin(userAdminProfileEdit.isAdmin);
 			}
 		}
-	}, [user, dispatch, userId, successUpdate, history]);
+	}, [user, dispatch, userId, successUpdate, history, userAdminProfileEdit]);
 
 	return (
 		<>
@@ -110,7 +123,7 @@ const UserEditScreen = ({ location, history, match }) => {
 						</Form.Group>
 
 						<Button type="submit" variant="primary">
-							SIGN UP
+							UPDATE
 						</Button>
 					</Form>
 				)}

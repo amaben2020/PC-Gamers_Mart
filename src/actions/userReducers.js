@@ -21,8 +21,12 @@ import {
 	USER_DELETE_SUCCESS,
 	USER_DELETE_FAIL,
 	USER_UPDATE_REQUEST,
-	USER_UPDATE_FAIL,
 	USER_UPDATE_SUCCESS,
+	USER_UPDATE_FAIL,
+	USER_ADMIN_SUCCESS,
+	USER_ADMIN_FAIL,
+	USER_ADMIN_REQUEST,
+	USER_ADMIN_RESET,
 } from "./../constants/userConstants.js";
 const initialState = {
 	userInfo: {},
@@ -202,7 +206,6 @@ export const userUpdateReducer = (state = { user: {} }, action) => {
 			return {
 				loading: false,
 				success: true,
-				user: action.payload,
 			};
 
 		case USER_UPDATE_FAIL:
@@ -210,6 +213,35 @@ export const userUpdateReducer = (state = { user: {} }, action) => {
 				loading: false,
 				error: action.payload,
 			};
+		default:
+			return state;
+	}
+};
+
+//Getting all user profile information for admin user
+export const adminProfileListReducer = (state = { user: {} }, action) => {
+	switch (action.type) {
+		case USER_ADMIN_REQUEST:
+			return {
+				loading: true,
+			};
+
+		case USER_ADMIN_SUCCESS:
+			return {
+				loading: false,
+				user: action.payload,
+			};
+
+		case USER_ADMIN_FAIL:
+			return {
+				loading: false,
+				error: action.payload,
+			};
+		case USER_ADMIN_RESET:
+			return {
+				user: {},
+			};
+
 		default:
 			return state;
 	}
