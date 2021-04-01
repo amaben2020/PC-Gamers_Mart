@@ -3,26 +3,29 @@ import { useDispatch, useSelector } from "react-redux";
 import ErrorMessage from "../../messages/ErrorMessage";
 import { Button, Table, Row, Col } from "react-bootstrap";
 import Loading from "../../messages/Loading";
-import { deleteUser } from "./../../actions/userActions";
-import { listProducts } from "../../actions/userActions";
+import { productDeleteAction } from "./../../actions/productListActions";
+import { productListAction } from "../../actions/productListActions";
 import { LinkContainer } from "react-router-bootstrap";
 const ProductListScreen = ({ history }) => {
 	const dispatch = useDispatch();
-	const userList = useSelector((store) => store.userList);
-	//for all users
-	const { users, error, loading } = userList;
+
 	//for an individual user
 	const userLogin = useSelector((state) => state.userLogin);
 	const { userInfo } = userLogin;
-
-	const userDelete = useSelector((state) => state.userDelete);
-	const { success: successDelete } = userDelete;
+	const productList = useSelector((state) => state.productList);
+	const { products } = productList;
+	const productDelete = useSelector((state) => state.productDelete);
+	const {
+		success: successDelete,
+		error: errorDelete,
+		loading: loadingDelete,
+	} = productDelete;
 
 	useEffect(() => {
 		//only display or list all products if the user is an admin
 		//we are doing userInfo && userInfo.isAdmin to avoid errors
 		if (userInfo && userInfo.isAdmin) {
-			dispatch(listProducts());
+			dispatch(productListAction());
 		} else {
 			history.push("/login");
 		}
@@ -30,8 +33,7 @@ const ProductListScreen = ({ history }) => {
 
 	const deleteHandler = (id) => {
 		if (window.confirm("Are you sure")) {
-			//dispatch(deleteProduct(id));
-			console.log("deleted");
+			dispatch(productDeleteAction(id));
 		} else {
 			<ErrorMessage variant="danger"> Product Not Deleted</ErrorMessage>;
 		}
@@ -55,17 +57,17 @@ const ProductListScreen = ({ history }) => {
 				</Col>
 			</Row>
 
-			{loading ? (
+			{loadingDelete ? (
 				<Loading />
-			) : error ? (
-				<ErrorMessage variant="danger">{error}</ErrorMessage>
+			) : errorDelete ? (
+				<ErrorMessage variant="danger">{errorDelete}</ErrorMessage>
 			) : (
 				<Table striped bordered hover responsive className="table-sm">
 					<thead>
 						<tr>
 							<th>ID</th>
 							<th>NAME</th>
-							<th>EMAIL</th>
+
 							<th>PRICE</th>
 							<th>CATEGORY</th>
 							<th>BRAND</th>
