@@ -68,7 +68,9 @@ const ProductScreen = ({ match, history }) => {
 									<Row>
 										<Col>Price:</Col>
 										<Col>
-											<strong>&#8358;{product.price}</strong>
+											<strong>
+												&#8358;{product.price.toLocaleString("en")}
+											</strong>
 										</Col>
 									</Row>
 								</ListGroup.Item>

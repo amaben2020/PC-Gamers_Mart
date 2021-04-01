@@ -145,19 +145,19 @@ const PlaceOrderScreen = ({ history, match }) => {
 								<ListGroup.Item>
 									<Row>
 										<Col>Total Price</Col>
-										<Col>&#8358;{cart.itemsPrice}</Col>
+										<Col>&#8358;{cart.itemsPrice.toLocaleString("en")}</Col>
 									</Row>
 								</ListGroup.Item>
 								<ListGroup.Item>
 									<Row>
 										<Col>Shipping</Col>
-										<Col>&#8358;{cart.shippingPrice}</Col>
+										<Col>&#8358;{cart.shippingPrice.toLocaleString("en")}</Col>
 									</Row>
 								</ListGroup.Item>
 								<ListGroup.Item>
 									<Row>
 										<Col>Tax</Col>
-										<Col>&#8358;{cart.taxPrice}</Col>
+										<Col>&#8358;{cart.taxPrice.toLocaleString("en")}</Col>
 									</Row>
 								</ListGroup.Item>
 							</ListGroup.Item>

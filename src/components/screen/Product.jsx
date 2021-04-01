@@ -22,7 +22,9 @@ const Product = ({ product }) => {
 								text={`${product.numReviews} reviews`}
 							/>
 						</Card.Text>
-						<Card.Text as="h3">&#8358;{product.price}</Card.Text>
+						<Card.Text as="h3">
+							&#8358;{product.price.toLocaleString("en")}
+						</Card.Text>
 					</Link>
 				</Card.Body>
 			</Card>

@@ -194,7 +194,10 @@ const OrderScreen = ({ match }) => {
 										<ListGroup.Item>
 											<Row>
 												<Col>Items</Col>
-												<Col> &#8358; {order.itemsPrice}</Col>
+												<Col>
+													{" "}
+													&#8358; {order.itemsPrice.toLocaleString("en")}
+												</Col>
 											</Row>
 										</ListGroup.Item>
 										<ListGroup.Item>
