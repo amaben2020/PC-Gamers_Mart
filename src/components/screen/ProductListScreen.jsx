@@ -4,8 +4,12 @@ import ErrorMessage from "../../messages/ErrorMessage";
 import { Button, Table, Row, Col } from "react-bootstrap";
 import Loading from "../../messages/Loading";
 import { productDeleteAction } from "./../../actions/productListActions";
-import { productListAction } from "../../actions/productListActions";
+import {
+	productListAction,
+	productCreateAction,
+} from "../../actions/productListActions";
 import { LinkContainer } from "react-router-bootstrap";
+import { PRODUCT_CREATE_RESET } from "./../../constants/constants";
 const ProductListScreen = ({ history }) => {
 	const dispatch = useDispatch();
 
@@ -21,15 +25,37 @@ const ProductListScreen = ({ history }) => {
 		loading: loadingDelete,
 	} = productDelete;
 
+	const productCreate = useSelector((state) => state.productCreate);
+	const {
+		success: successCreate,
+		error: errorCreate,
+		loading: loadingCreate,
+		product: createdProduct,
+	} = productCreate;
+
 	useEffect(() => {
 		//only display or list all products if the user is an admin
 		//we are doing userInfo && userInfo.isAdmin to avoid errors
-		if (userInfo && userInfo.isAdmin) {
-			dispatch(productListAction());
-		} else {
+
+		dispatch({ type: PRODUCT_CREATE_RESET }); //This would clear the form field after a product is created
+		if (!userInfo.isAdmin) {
 			history.push("/login");
 		}
-	}, [dispatch, successDelete, userInfo, history]);
+		//if product is successfully created
+		if (successCreate) {
+			//newly created product /edit
+			history.push(`/admin/product/${createdProduct._id}/edit`);
+		} else {
+			dispatch(productListAction());
+		}
+	}, [
+		dispatch,
+		successDelete,
+		createdProduct,
+		successCreate,
+		userInfo,
+		history,
+	]);
 
 	const deleteHandler = (id) => {
 		if (window.confirm("Are you sure")) {
@@ -39,8 +65,8 @@ const ProductListScreen = ({ history }) => {
 		}
 	};
 
-	const createProductHandler = (product) => {
-		console.log("product created");
+	const createProductHandler = () => {
+		dispatch(productCreateAction());
 	};
 
 	return (
@@ -56,7 +82,10 @@ const ProductListScreen = ({ history }) => {
 					</Button>
 				</Col>
 			</Row>
-
+			{loadingCreate && <Loading />}
+			{errorCreate && (
+				<ErrorMessage variant="danger">{errorCreate}</ErrorMessage>
+			)}
 			{loadingDelete ? (
 				<Loading />
 			) : errorDelete ? (

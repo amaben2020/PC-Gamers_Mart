@@ -86,7 +86,7 @@ export const productDeleteReducer = (
 	}
 };
 
-export const productCreateReducer = (state = {}, action = {}) => {
+export const productCreateReducer = (state = { product: {} }, action = {}) => {
 	switch (action.type) {
 		case PRODUCT_CREATE_REQUEST:
 			return {
@@ -96,6 +96,32 @@ export const productCreateReducer = (state = {}, action = {}) => {
 		case PRODUCT_CREATE_SUCCESS:
 			return {
 				loading: false,
+				product: action.payload,
+				success: true, //same as message from backend
+			};
+		case PRODUCT_CREATE_FAIL:
+			return {
+				loading: false,
+				error: action.payload,
+			};
+		case PRODUCT_CREATE_RESET:
+			return {};
+		default:
+			return state;
+	}
+};
+
+export const productUpdateReducer = (state = { product: {} }, action = {}) => {
+	switch (action.type) {
+		case PRODUCT_CREATE_REQUEST:
+			return {
+				loading: true,
+				...state,
+			};
+		case PRODUCT_CREATE_SUCCESS:
+			return {
+				loading: false,
+				product: action.payload,
 				success: true, //same as message from backend
 			};
 		case PRODUCT_CREATE_FAIL:

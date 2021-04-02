@@ -8,6 +8,9 @@ import {
 	PRODUCT_DELETE_REQUEST,
 	PRODUCT_DELETE_SUCCESS,
 	PRODUCT_DELETE_FAIL,
+	PRODUCT_CREATE_REQUEST,
+	PRODUCT_CREATE_SUCCESS,
+	PRODUCT_CREATE_FAIL,
 } from "./../constants/constants";
 import axios from "axios";
 
@@ -71,5 +74,52 @@ export const productDeleteAction = (productId) => async (
 		//dispatch({ type: USER_DETAILS_SUCCESS, payload: data });
 	} catch (error) {
 		dispatch({ type: PRODUCT_DELETE_FAIL, payload: error });
+	}
+};
+
+export const productCreateAction = () => async (dispatch, getState) => {
+	//no need for any parameters
+	dispatch({ type: PRODUCT_CREATE_REQUEST });
+	try {
+		//getting the userInfo i.e Token from state so you could access the user's profile
+		const {
+			userLogin: { userInfo },
+		} = getState();
+
+		const config = {
+			headers: {
+				Authorization: `Bearer ${userInfo.token} `,
+			},
+		};
+		// we just pass a large empty object to create products
+		const { data } = await axios.post(`/api/products`, {}, config);
+		console.log("created : ", data);
+		dispatch({ type: PRODUCT_CREATE_SUCCESS, payload: data });
+	} catch (error) {
+		dispatch({ type: PRODUCT_CREATE_FAIL, payload: error });
+	}
+};
+
+export const productUpdateAction = (product) => async (dispatch, getState) => {
+	//no need for any parameters
+	dispatch({ type: PRODUCT_CREATE_REQUEST });
+	try {
+		//getting the userInfo i.e Token from state so you could access the user's profile
+		const {
+			userLogin: { userInfo },
+		} = getState();
+
+		const config = {
+			headers: {
+				"Content-Type": "application/json",
+				Authorization: `Bearer ${userInfo.token} `,
+			},
+		};
+		// we just pass a large empty object to create products
+		const { data } = await axios.post(`/api/products`, {}, config);
+		console.log("created : ", data);
+		dispatch({ type: PRODUCT_CREATE_SUCCESS, payload: data });
+	} catch (error) {
+		dispatch({ type: PRODUCT_CREATE_FAIL, payload: error });
 	}
 };
