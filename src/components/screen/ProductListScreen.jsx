@@ -71,6 +71,7 @@ const ProductListScreen = ({ history }) => {
 							<th>PRICE</th>
 							<th>CATEGORY</th>
 							<th>BRAND</th>
+							<th>DELIVERED</th>
 							<th>edit/delete</th>
 						</tr>
 					</thead>
@@ -81,8 +82,8 @@ const ProductListScreen = ({ history }) => {
 								<td>{product.name}</td>
 
 								<td> &#8358; {product.price.toLocaleString("en")}</td>
-								<td> &#8358; {product.category}</td>
-								<td> &#8358; {product.brand}</td>
+								<td> {product.category}</td>
+								<td> {product.brand}</td>
 								<td>
 									{product.isDelivered ? (
 										<i className="fas fa-check" style={{ color: "green" }}></i>
