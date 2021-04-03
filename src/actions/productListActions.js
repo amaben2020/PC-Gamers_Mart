@@ -11,6 +11,9 @@ import {
 	PRODUCT_CREATE_REQUEST,
 	PRODUCT_CREATE_SUCCESS,
 	PRODUCT_CREATE_FAIL,
+	PRODUCT_UPDATE_REQUEST,
+	PRODUCT_UPDATE_SUCCESS,
+	PRODUCT_UPDATE_FAIL,
 } from "./../constants/constants";
 import axios from "axios";
 
@@ -101,8 +104,8 @@ export const productCreateAction = () => async (dispatch, getState) => {
 };
 
 export const productUpdateAction = (product) => async (dispatch, getState) => {
-	//no need for any parameters
-	dispatch({ type: PRODUCT_CREATE_REQUEST });
+	//product is what you wanna update
+	dispatch({ type: PRODUCT_UPDATE_REQUEST });
 	try {
 		//getting the userInfo i.e Token from state so you could access the user's profile
 		const {
@@ -115,11 +118,15 @@ export const productUpdateAction = (product) => async (dispatch, getState) => {
 				Authorization: `Bearer ${userInfo.token} `,
 			},
 		};
-		// we just pass a large empty object to create products
-		const { data } = await axios.post(`/api/products`, {}, config);
-		console.log("created : ", data);
-		dispatch({ type: PRODUCT_CREATE_SUCCESS, payload: data });
+		// we just pass a large empty object to UPDATE products
+		const { data } = await axios.put(
+			`/api/products/${product._id}`,
+			product,
+			config
+		);
+		console.log("UPDATEd : ", data);
+		dispatch({ type: PRODUCT_UPDATE_SUCCESS, payload: data });
 	} catch (error) {
-		dispatch({ type: PRODUCT_CREATE_FAIL, payload: error });
+		dispatch({ type: PRODUCT_UPDATE_FAIL, payload: error });
 	}
 };

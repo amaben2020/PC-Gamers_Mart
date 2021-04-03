@@ -9,7 +9,10 @@ import {
 	productCreateAction,
 } from "../../actions/productListActions";
 import { LinkContainer } from "react-router-bootstrap";
-import { PRODUCT_CREATE_RESET } from "./../../constants/constants";
+import {
+	PRODUCT_CREATE_RESET,
+	PRODUCT_DELETE_RESET,
+} from "./../../constants/constants";
 const ProductListScreen = ({ history }) => {
 	const dispatch = useDispatch();
 
@@ -34,6 +37,9 @@ const ProductListScreen = ({ history }) => {
 	} = productCreate;
 
 	useEffect(() => {
+		// if (successDelete) {
+		// 	dispatch(productListAction());
+		// }
 		//only display or list all products if the user is an admin
 		//we are doing userInfo && userInfo.isAdmin to avoid errors
 
@@ -41,6 +47,7 @@ const ProductListScreen = ({ history }) => {
 		if (!userInfo.isAdmin) {
 			history.push("/login");
 		}
+
 		//if product is successfully created
 		if (successCreate) {
 			//newly created product /edit

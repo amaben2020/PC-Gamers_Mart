@@ -9,6 +9,7 @@ import {
 	PRODUCT_CREATE_SUCCESS,
 	PRODUCT_CREATE_FAIL,
 	PRODUCT_CREATE_RESET,
+	PRODUCT_DELETE_RESET,
 } from "./../constants/constants";
 const productDetailsState = {
 	product: {},
@@ -81,6 +82,8 @@ export const productDeleteReducer = (
 				loading: false,
 				error: action.payload,
 			};
+		case PRODUCT_DELETE_RESET:
+			return {};
 		default:
 			return state;
 	}
@@ -116,7 +119,6 @@ export const productUpdateReducer = (state = { product: {} }, action = {}) => {
 		case PRODUCT_CREATE_REQUEST:
 			return {
 				loading: true,
-				...state,
 			};
 		case PRODUCT_CREATE_SUCCESS:
 			return {

@@ -1,5 +1,6 @@
 main {
 	min-height: 80vh;
+	background-color: rgb(207, 207, 207);
 }
 
 h1 {
@@ -14,10 +15,14 @@ h2 {
 
 h3 {
 	padding: 1rem 0;
+	color: rgb(64, 102, 7);
 }
 
 .rating span {
 	margin: 0.1rem;
+}
+.card {
+	background-color: black;
 }
 
 .card-img {

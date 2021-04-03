@@ -10,6 +10,8 @@ import { getUserDetails, getUserForAdmin } from "./../../actions/userActions";
 import { Row } from "react-bootstrap";
 import { USER_UPDATE_RESET } from "../../constants/userConstants.js";
 import { productDetailsAction } from "./../../actions/productListActions";
+import { PRODUCT_UPDATE_RESET } from "../../constants/constants";
+import { productUpdateAction } from "./../../actions/productListActions";
 
 //yOU SIMPLY GET THE PRODUCT YOU WANNA EDIT
 const ProductEditScreen = ({ location, history, match }) => {
@@ -29,12 +31,8 @@ const ProductEditScreen = ({ location, history, match }) => {
 	const productDetails = useSelector((state) => state.productDetails);
 	const { product } = productDetails;
 
-	const userUpdate = useSelector((state) => state.userUpdate);
-	const {
-		loading: loadingUpdate,
-		error: errorUpdate,
-		success: successUpdate,
-	} = userUpdate;
+	const productUpdate = useSelector((state) => state.productUpdate);
+	const { loading: loadingUpdate, error: errorUpdate, success } = productUpdate;
 
 	const adminProfileList = useSelector((state) => state.adminProfileList);
 	const {
@@ -44,22 +42,53 @@ const ProductEditScreen = ({ location, history, match }) => {
 	} = adminProfileList;
 
 	useEffect(() => {
-		// simply render the list of products if there are none
-		if (!product.name || product._id !== productId) {
-			dispatch(productDetailsAction(productId));
+		//if successfully updated, clear the fields and push
+		if (success) {
+			dispatch({ type: PRODUCT_UPDATE_RESET });
+			history.push("/admin/productlist");
 		} else {
-			setName(product.name);
-			setBrand(product.brand);
-			setDescription(product.description);
-			setImage(product.image);
-			setPrice(product.price);
-			setCountInStock(product.countInStock);
-			setCategory(product.category);
+			// simply render the list of products if there are none
+			if (!product.name || product._id !== productId) {
+				dispatch(productDetailsAction(productId));
+			} else {
+				setName(product.name);
+				setBrand(product.brand);
+				setDescription(product.description);
+				setImage(product.image);
+				setPrice(product.price);
+				setCountInStock(product.countInStock);
+				setCategory(product.category);
+			}
 		}
-	}, [dispatch]);
+	}, [
+		dispatch,
+		success,
+		history,
+		product._id,
+		product.name,
+		product.brand,
+		product.description,
+		product.image,
+		product.price,
+		product.countInStock,
+		product.category,
+		productId,
+	]);
+	//The submit handler simply sends the form value to the backend/DB
 	const submitHandler = (e) => {
 		e.preventDefault();
-		//UPDATE PRODUCT
+		dispatch(
+			productUpdateAction({
+				_id: productId,
+				name,
+				category,
+				brand,
+				countInStock,
+				description,
+				price,
+				image,
+			})
+		);
 	};
 
 	return (
@@ -70,6 +99,12 @@ const ProductEditScreen = ({ location, history, match }) => {
 			</Link>
 			<FormContainer>
 				<h1> Edit Product</h1>
+				{success && (
+					<ErrorMessage>
+						Product successfully updated
+						<i className="fas fa-check"></i>
+					</ErrorMessage>
+				)}
 				{loadingUpdate && <Loading />}
 				{errorUpdate && (
 					<ErrorMessage variant="danger">{errorUpdate}</ErrorMessage>
