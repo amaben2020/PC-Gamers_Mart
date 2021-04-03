@@ -14,6 +14,9 @@ import {
 	PRODUCT_UPDATE_REQUEST,
 	PRODUCT_UPDATE_SUCCESS,
 	PRODUCT_UPDATE_FAIL,
+	PRODUCT_REVIEW_SUCCESS,
+	PRODUCT_REVIEW_FAIL,
+	PRODUCT_REVIEW_REQUEST,
 } from "./../constants/constants";
 import axios from "axios";
 
@@ -124,9 +127,36 @@ export const productUpdateAction = (product) => async (dispatch, getState) => {
 			product,
 			config
 		);
-		console.log("UPDATEd : ", data);
+
 		dispatch({ type: PRODUCT_UPDATE_SUCCESS, payload: data });
 	} catch (error) {
 		dispatch({ type: PRODUCT_UPDATE_FAIL, payload: error });
+	}
+};
+
+export const createProductReview = (productId, review) => async (
+	dispatch,
+	getState
+) => {
+	//product is what you wanna update
+	dispatch({ type: PRODUCT_REVIEW_REQUEST });
+	try {
+		//getting the userInfo i.e Token from state so you could access the user's profile
+		const {
+			userLogin: { userInfo },
+		} = getState();
+
+		const config = {
+			headers: {
+				"Content-Type": "application/json",
+				Authorization: `Bearer ${userInfo.token} `,
+			},
+		};
+		// we just pass a review object to create review, this serves as body
+		await axios.put(`/api/products/${productId}/reviews`, review, config);
+		//you dont need a payload, just success if true
+		dispatch({ type: PRODUCT_REVIEW_SUCCESS });
+	} catch (error) {
+		dispatch({ type: PRODUCT_REVIEW_FAIL, payload: error });
 	}
 };

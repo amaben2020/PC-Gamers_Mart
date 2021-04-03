@@ -10,6 +10,10 @@ import {
 	PRODUCT_CREATE_FAIL,
 	PRODUCT_CREATE_RESET,
 	PRODUCT_DELETE_RESET,
+	PRODUCT_REVIEW_REQUEST,
+	PRODUCT_REVIEW_SUCCESS,
+	PRODUCT_REVIEW_FAIL,
+	PRODUCT_REVIEW_RESET,
 } from "./../constants/constants";
 const productDetailsState = {
 	product: {},
@@ -133,6 +137,33 @@ export const productUpdateReducer = (state = { product: {} }, action = {}) => {
 			};
 		case PRODUCT_CREATE_RESET:
 			return {};
+		default:
+			return state;
+	}
+};
+
+export const productReviewCreateReducer = (
+	state = { product: {} },
+	action = {}
+) => {
+	switch (action.type) {
+		case PRODUCT_REVIEW_REQUEST:
+			return {
+				loading: true,
+			};
+		case PRODUCT_REVIEW_SUCCESS:
+			return {
+				loading: false,
+				product: action.payload,
+				success: true, //same as message from backend
+			};
+		case PRODUCT_REVIEW_FAIL:
+			return {
+				loading: false,
+				error: action.payload,
+			};
+		case PRODUCT_REVIEW_RESET:
+			return {}; //REMOVE EVERYTHING FROM THE STATE
 		default:
 			return state;
 	}
