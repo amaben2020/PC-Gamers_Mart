@@ -17,7 +17,7 @@ import UserEditScreen from "./components/screen/UserEditScreen";
 import ProductListScreen from "./components/screen/ProductListScreen";
 import ProductEditScreen from "./components/screen/ProductEditScreen";
 import OrderListScreen from "./components/screen/OrderListScreen";
-
+import Searchbox from "./components/Searchbox";
 function App() {
 	return (
 		<Router>
@@ -36,6 +36,7 @@ function App() {
 						component={ProductEditScreen}
 						exact
 					/>
+
 					<Route path="/admin/orderlist" component={OrderListScreen} exact />
 					<Route path="/admin/user/:id/edit" component={UserEditScreen} exact />
 					<Route path="/order/:id" component={OrderScreen} exact />
@@ -46,6 +47,7 @@ function App() {
 					<Route path="/profile" component={ProfileScreen} exact />
 					<Route path="/" component={HomeScreen} exact />
 					<Route path="/product/:id" component={ProductScreen} />
+					<Route path="/search/:keyword" component={Searchbox} />
 					<Route path="/cart/:id?" component={CartScreen} />
 				</Container>
 			</main>

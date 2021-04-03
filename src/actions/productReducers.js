@@ -142,10 +142,7 @@ export const productUpdateReducer = (state = { product: {} }, action = {}) => {
 	}
 };
 
-export const productReviewCreateReducer = (
-	state = { product: {} },
-	action = {}
-) => {
+export const productReviewCreateReducer = (state = {}, action = {}) => {
 	switch (action.type) {
 		case PRODUCT_REVIEW_REQUEST:
 			return {
@@ -154,7 +151,7 @@ export const productReviewCreateReducer = (
 		case PRODUCT_REVIEW_SUCCESS:
 			return {
 				loading: false,
-				product: action.payload,
+
 				success: true, //same as message from backend
 			};
 		case PRODUCT_REVIEW_FAIL:
