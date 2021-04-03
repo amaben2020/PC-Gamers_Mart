@@ -5,13 +5,17 @@ import { useSelector, useDispatch } from "react-redux";
 import { productListAction } from "./../../actions/productListActions.js";
 import Loading from "../../messages/Loading";
 import ErrorMessage from "../../messages/ErrorMessage";
-const HomeScreen = () => {
+const HomeScreen = ({ match }) => {
 	const dispatch = useDispatch();
 	const productList = useSelector((state) => state.productList);
 	const { products, loading, error } = productList;
+
+	//This is coming from the search route query :keyword
+	const keyword = match.params.keyword;
 	useEffect(() => {
-		dispatch(productListAction());
-	}, [dispatch]);
+		//pass the keyword query to the action that fetches products
+		dispatch(productListAction(keyword));
+	}, [dispatch, keyword]);
 
 	return (
 		<>
