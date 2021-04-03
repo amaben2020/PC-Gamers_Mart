@@ -12,6 +12,7 @@ import { USER_UPDATE_RESET } from "../../constants/userConstants.js";
 import { productDetailsAction } from "./../../actions/productListActions";
 import { PRODUCT_UPDATE_RESET } from "../../constants/constants";
 import { productUpdateAction } from "./../../actions/productListActions";
+import axios from "axios";
 
 //yOU SIMPLY GET THE PRODUCT YOU WANNA EDIT
 const ProductEditScreen = ({ location, history, match }) => {
@@ -23,6 +24,9 @@ const ProductEditScreen = ({ location, history, match }) => {
 	const [brand, setBrand] = useState("");
 	const [countInStock, setCountInStock] = useState(0);
 	const [category, setCategory] = useState("");
+
+	//creating the image loading state
+	const [uploadingLoading, setUploadingLoading] = useState(false);
 
 	const dispatch = useDispatch();
 
@@ -91,6 +95,28 @@ const ProductEditScreen = ({ location, history, match }) => {
 		);
 	};
 
+	const uploadFileHandler = async (e) => {
+		const file = e.target.files[0]; //first item in a large object
+		const formData = new FormData();
+		formData.append("image", file);
+		setUploadingLoading(true);
+
+		try {
+			const config = {
+				headers: {
+					"Content-Type": "multipart/form-data",
+				},
+			};
+			const { data } = await axios.post("/api/upload", formData, config);
+
+			setImage(data);
+			setUploadingLoading(false);
+		} catch (error) {
+			console.error(error);
+			setUploadingLoading(false);
+		}
+	};
+
 	return (
 		<>
 			<Link to="/admin/productlist" className="btn btn-light my-3">
@@ -145,11 +171,18 @@ const ProductEditScreen = ({ location, history, match }) => {
 								></Form.Check>
 							</Row>
 						</Form.Group>
+						{uploadingLoading && <Loading />}
+						<Form.File
+							id="image-file"
+							label="Choose File"
+							custom
+							onChange={uploadFileHandler}
+						></Form.File>
 						<Form.Group controlId="brand">
 							<Row>
 								<Form.Label className="mr-3">Brand</Form.Label>
 								<Form.Check
-									type="brand"
+									type="text"
 									value={brand}
 									onChange={(e) => setBrand(e.target.value)}
 								></Form.Check>

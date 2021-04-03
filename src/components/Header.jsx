@@ -18,7 +18,13 @@ const Header = () => {
 				<Container>
 					<LinkContainer to="/">
 						<Navbar.Brand>
-							Minimalist Shop <i className="fas fa-shopping-cart"></i>
+							PC Gamer's Mart <i className="fas fa-shopping-cart"></i>
+							<i class="fas fa-gamepad"></i>
+							<h6
+								style={{ fontSize: 6.4, fontStyle: "italic", fontWeight: 900 }}
+							>
+								Bringing awesomeness to your doorstep
+							</h6>
 						</Navbar.Brand>
 					</LinkContainer>
 					<Navbar.Toggle aria-controls="basic-navbar-nav" />

@@ -17,3 +17,9 @@ export const ORDER_LIST_MY_REQUEST = "ORDER_LIST_MY_REQUEST";
 export const ORDER_LIST_MY_SUCCESS = "ORDER_LIST_MY_SUCCESS";
 export const ORDER_LIST_MY_FAIL = "ORDER_LIST_MY_FAIL";
 export const ORDER_LIST_MY_RESET = "ORDER_LIST_MY_RESET";
+
+//Getting Orders on our profile screen in a tabular form admin only
+export const ORDER_LIST_REQUEST = "ORDER_LIST_REQUEST";
+export const ORDER_LIST_SUCCESS = "ORDER_LIST_SUCCESS";
+export const ORDER_LIST_FAIL = "ORDER_LIST_FAIL";
+export const ORDER_LIST_RESET = "ORDER_LIST_RESET";
