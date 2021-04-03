@@ -1,7 +1,7 @@
 import { getOrderDetails } from "./../../actions/orderActions";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-
+import { ORDER_DELIVER_RESET } from "./../../constants/orderConstants";
 import { PayPalButton } from "react-paypal-button-v2";
 import { Col, ListGroup, Image, Card, Row } from "react-bootstrap";
 import Loading from "./../../messages/Loading";
@@ -10,6 +10,8 @@ import { payOrder } from "../../actions/orderActions";
 import { Link } from "react-router-dom";
 import axios from "axios";
 import { ORDER_PAY_RESET } from "./../../constants/orderConstants";
+import { deliverOrder } from "./../../actions/orderActions";
+
 const OrderScreen = ({ match }) => {
 	//creating a state that holds the sdk script when created
 	const [sdkReady, setSdkReady] = useState(false);
