@@ -20,12 +20,17 @@ import {
 } from "./../constants/constants";
 import axios from "axios";
 
-export const productListAction = (keyword = "") => async (dispatch) => {
+//This handles every product rendered on the UI
+export const productListAction = (keyword = "", pageNumber = "") => async (
+	dispatch
+) => {
 	dispatch({ type: PRODUCT_LIST_REQUEST });
 
 	try {
-		//filter the products by inputted words
-		const { data } = await axios.get(`/api/products?keyword=${keyword}`);
+		//filter the products by inputted words and pagenumber queries
+		const { data } = await axios.get(
+			`/api/products?keyword=${keyword}&pageNumber=${pageNumber}`
+		);
 
 		dispatch({ type: PRODUCT_LIST_SUCCESS, payload: data });
 	} catch (error) {
