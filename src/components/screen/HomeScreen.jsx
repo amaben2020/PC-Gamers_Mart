@@ -5,20 +5,30 @@ import { useSelector, useDispatch } from "react-redux";
 import { productListAction } from "./../../actions/productListActions.js";
 import Loading from "../../messages/Loading";
 import ErrorMessage from "../../messages/ErrorMessage";
+import Paginate from "./../Paginate";
+import ProductCarousel from "./ProductCarousel";
+import Meta from "../Meta";
+import { Link } from "react-router-dom";
 const HomeScreen = ({ match }) => {
 	const dispatch = useDispatch();
 	const productList = useSelector((state) => state.productList);
-	const { products, loading, error } = productList;
+	const { products, loading, error, pages, page } = productList;
+
+	const pageNumber = match.params.pageNumber || 1;
 
 	//This is coming from the search route query :keyword
 	const keyword = match.params.keyword;
 	useEffect(() => {
-		//pass the keyword query to the action that fetches products
-		dispatch(productListAction(keyword));
+		//pass the keyword query to the action that fetches products i.e /iph/3
+		dispatch(productListAction(keyword, pageNumber));
 	}, [dispatch, keyword]);
 
 	return (
 		<>
+			{/** rectified after db issue	{!keyword && <ProductCarousel />} */}
+			{/** {!keyword ? <ProductCarousel/> : <Link to='/'>Go Back</Link>} */}
+
+			<Meta />
 			<h1> Latest Products</h1>
 			{loading ? (
 				<Loading />
@@ -40,6 +50,14 @@ const HomeScreen = ({ match }) => {
 					))}
 				</Row>
 			)}
+			<Row>
+				{" "}
+				<Paginate
+					pages={pages}
+					page={page}
+					keyword={keyword ? keyword : ""}
+				/>{" "}
+			</Row>
 		</>
 	);
 };

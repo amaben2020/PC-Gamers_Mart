@@ -18,6 +18,7 @@ import {
 import Loading from "../../messages/Loading";
 import ErrorMessage from "../../messages/ErrorMessage";
 import { PRODUCT_REVIEW_RESET } from "./../../constants/constants.js";
+import Meta from "../Meta";
 const ProductScreen = ({ match, history }) => {
 	const dispatch = useDispatch();
 	const productDetails = useSelector((state) => state.productDetails);
@@ -65,6 +66,7 @@ const ProductScreen = ({ match, history }) => {
 
 	return (
 		<>
+			<Meta title={product.name} />
 			<Link
 				className="btn btn-light my-3 shadow-sm p-1 mb-1 bg-white rounded"
 				to="/"

@@ -17,6 +17,9 @@ import {
 	PRODUCT_REVIEW_SUCCESS,
 	PRODUCT_REVIEW_FAIL,
 	PRODUCT_REVIEW_REQUEST,
+	PRODUCT_TOP_REQUEST,
+	PRODUCT_TOP_SUCCESS,
+	PRODUCT_TOP_FAIL,
 } from "./../constants/constants";
 import axios from "axios";
 
@@ -37,6 +40,26 @@ export const productListAction = (keyword = "", pageNumber = "") => async (
 		//Dispatching error, if there is a custom error, fire that one, else use generic error
 		dispatch({
 			type: PRODUCT_LIST_FAIL,
+			payload:
+				error.response && error.response.data.message
+					? error.data.message
+					: error.message,
+		});
+	}
+};
+
+export const listTopProduct = () => async (dispatch) => {
+	dispatch({ type: PRODUCT_TOP_REQUEST });
+
+	try {
+		//filter the products by inputted words and pagenumber queries
+		const { data } = await axios.get(`/api/products/top`);
+
+		dispatch({ type: PRODUCT_TOP_SUCCESS, payload: data });
+	} catch (error) {
+		//Dispatching error, if there is a custom error, fire that one, else use generic error
+		dispatch({
+			type: PRODUCT_TOP_FAIL,
 			payload:
 				error.response && error.response.data.message
 					? error.data.message

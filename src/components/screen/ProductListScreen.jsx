@@ -13,14 +13,16 @@ import {
 	PRODUCT_CREATE_RESET,
 	PRODUCT_DELETE_RESET,
 } from "./../../constants/constants";
-const ProductListScreen = ({ history }) => {
+import Paginate from "../Paginate";
+const ProductListScreen = ({ history, match }) => {
 	const dispatch = useDispatch();
+	const pageNumber = match.params.pageNumber || 1;
 
 	//for an individual user
 	const userLogin = useSelector((state) => state.userLogin);
 	const { userInfo } = userLogin;
 	const productList = useSelector((state) => state.productList);
-	const { products } = productList;
+	const { products, page, pages } = productList;
 	const productDelete = useSelector((state) => state.productDelete);
 	const {
 		success: successDelete,
@@ -53,7 +55,7 @@ const ProductListScreen = ({ history }) => {
 			//newly created product /edit
 			history.push(`/admin/product/${createdProduct._id}/edit`);
 		} else {
-			dispatch(productListAction());
+			dispatch(productListAction("", pageNumber));
 		}
 	}, [
 		dispatch,
@@ -62,6 +64,7 @@ const ProductListScreen = ({ history }) => {
 		successCreate,
 		userInfo,
 		history,
+		pageNumber,
 	]);
 
 	const deleteHandler = (id) => {
@@ -98,54 +101,60 @@ const ProductListScreen = ({ history }) => {
 			) : errorDelete ? (
 				<ErrorMessage variant="danger">{errorDelete}</ErrorMessage>
 			) : (
-				<Table striped bordered hover responsive className="table-sm">
-					<thead>
-						<tr>
-							<th>ID</th>
-							<th>NAME</th>
+				<>
+					<Table striped bordered hover responsive className="table-sm">
+						<thead>
+							<tr>
+								<th>ID</th>
+								<th>NAME</th>
 
-							<th>PRICE</th>
-							<th>CATEGORY</th>
-							<th>BRAND</th>
-							<th>DELIVERED</th>
-							<th>edit/delete</th>
-						</tr>
-					</thead>
-					<tbody>
-						{products.map((product, idx) => (
-							<tr key={idx}>
-								<td>{product._id}</td>
-								<td>{product.name}</td>
-
-								<td> &#8358; {product.price.toLocaleString("en")}</td>
-								<td> {product.category}</td>
-								<td> {product.brand}</td>
-								<td>
-									{product.isDelivered ? (
-										<i className="fas fa-check" style={{ color: "green" }}></i>
-									) : (
-										<i className="fas fa-times" style={{ color: "red" }}></i>
-									)}
-								</td>
-								<td>
-									<LinkContainer to={`/admin/product/${product._id}/edit`}>
-										<Button variant="light" className="btn-sm">
-											<i className="fas fa-edit"></i>
-										</Button>
-									</LinkContainer>
-
-									<Button
-										variant="trash"
-										className="btn-sm"
-										onClick={() => deleteHandler(product._id)}
-									>
-										<i style={{ color: "red" }} className="fas fa-trash"></i>
-									</Button>
-								</td>
+								<th>PRICE</th>
+								<th>CATEGORY</th>
+								<th>BRAND</th>
+								<th>DELIVERED</th>
+								<th>edit/delete</th>
 							</tr>
-						))}
-					</tbody>
-				</Table>
+						</thead>
+						<tbody>
+							{products.map((product, idx) => (
+								<tr key={idx}>
+									<td>{product._id}</td>
+									<td>{product.name}</td>
+
+									<td> &#8358; {product.price.toLocaleString("en")}</td>
+									<td> {product.category}</td>
+									<td> {product.brand}</td>
+									<td>
+										{product.isDelivered ? (
+											<i
+												className="fas fa-check"
+												style={{ color: "green" }}
+											></i>
+										) : (
+											<i className="fas fa-times" style={{ color: "red" }}></i>
+										)}
+									</td>
+									<td>
+										<LinkContainer to={`/admin/product/${product._id}/edit`}>
+											<Button variant="light" className="btn-sm">
+												<i className="fas fa-edit"></i>
+											</Button>
+										</LinkContainer>
+
+										<Button
+											variant="trash"
+											className="btn-sm"
+											onClick={() => deleteHandler(product._id)}
+										>
+											<i style={{ color: "red" }} className="fas fa-trash"></i>
+										</Button>
+									</td>
+								</tr>
+							))}
+						</tbody>
+					</Table>
+					<Paginate pages={pages} page={page} isAdmin={true} />
+				</>
 			)}
 		</div>
 	);
