@@ -20,11 +20,12 @@ import ErrorMessage from "../../messages/ErrorMessage";
 import { PRODUCT_REVIEW_RESET } from "./../../constants/constants.js";
 import Meta from "../Meta";
 const ProductScreen = ({ match, history }) => {
-	const dispatch = useDispatch();
-	const productDetails = useSelector((state) => state.productDetails);
 	const [qty, setQty] = useState(1);
 	const [rating, setRating] = useState(0);
 	const [comment, setComment] = useState("");
+
+	const dispatch = useDispatch();
+	const productDetails = useSelector((state) => state.productDetails);
 	const { product, loading, error } = productDetails;
 
 	//getting the login state, so that a user must be logged in to review stuff

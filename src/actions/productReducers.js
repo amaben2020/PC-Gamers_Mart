@@ -18,10 +18,7 @@ import {
 	PRODUCT_TOP_FAIL,
 	PRODUCT_TOP_REQUEST,
 } from "./../constants/constants";
-const productDetailsState = {
-	product: {},
-	review: [],
-};
+
 export const productListReducer = (state = { products: [] }, action = {}) => {
 	switch (action.type) {
 		case PRODUCT_LIST_REQUEST:
@@ -72,7 +69,10 @@ export const topRatedProductReducer = (
 			return state;
 	}
 };
-
+const productDetailsState = {
+	product: {},
+	review: [],
+};
 export const productDetailsReducer = (
 	state = productDetailsState,
 	action = {}

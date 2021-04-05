@@ -45,7 +45,7 @@ export const login = (email, password) => async (dispatch) => {
 		});
 
 		dispatch({ type: USER_LOGIN_SUCCESS, payload: data });
-
+		//the data is the object of userInfo
 		localStorage.setItem("userInfo", JSON.stringify(data));
 	} catch (error) {
 		dispatch({ type: USER_LOGIN_FAIL, payload: error });
@@ -80,7 +80,7 @@ export const register = (name, email, password) => async (dispatch) => {
 //we need to getState cos we need the userInfo (token)
 //The id below is just a parameter where we would fill in profile route, this makes us navigate to that route
 
-export const getUserDetails = (id) => async (dispatch, getState) => {
+export const getUserDetails = (url) => async (dispatch, getState) => {
 	try {
 		dispatch({ type: USER_DETAILS_REQUEST });
 		// const userInfo = getState().userLogin.userInfo;
@@ -102,8 +102,9 @@ export const getUserDetails = (id) => async (dispatch, getState) => {
 				Authorization: `Bearer ${userInfo.token}`,
 			},
 		};
-		//isnt this ${id} meant to be profile???
-		const { data } = await axios.get(`/api/users/${id}`, config);
+		//This endpoint is exactly same as /api/users/profile
+		const { data } = await axios.get(`/api/users/${url}`, config);
+		//This gives you data about the logged in user
 
 		dispatch({ type: USER_DETAILS_SUCCESS, payload: data });
 	} catch (error) {
