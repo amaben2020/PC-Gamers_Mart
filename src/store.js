@@ -72,7 +72,7 @@ const paymentMethodFromStorage = localStorage.getItem("paymentMethod")
 	? JSON.parse(localStorage.getItem("paymentMethod"))
 	: "";
 
-//Putting the cartItems in a global state
+//Putting the cartItems in a persisted global state
 const initialState = {
 	cart: {
 		cartItems: cartItemsFromStorage,

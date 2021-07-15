@@ -18,6 +18,8 @@ import ProductListScreen from "./components/screen/ProductListScreen";
 import ProductEditScreen from "./components/screen/ProductEditScreen";
 import OrderListScreen from "./components/screen/OrderListScreen";
 import Searchbox from "./components/Searchbox";
+import { ReactQueryDevtools } from "react-query-devtools";
+
 function App() {
 	return (
 		<Router>
@@ -61,6 +63,7 @@ function App() {
 					<Route path="/search/:keyword" component={HomeScreen} exact />
 					<Route path="/cart/:id?" component={CartScreen} />
 				</Container>
+				<ReactQueryDevtools initialIsOpen={false} />
 			</main>
 			<Footer />
 		</Router>

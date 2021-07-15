@@ -31,6 +31,7 @@ import axios from "axios";
 import { ORDER_LIST_MY_RESET } from "../constants/orderConstants";
 import { CART_ITEM_RESET } from "./../constants/cartConstants";
 export const login = (email, password) => async (dispatch) => {
+	//login loading ....
 	dispatch({ type: USER_LOGIN_REQUEST });
 	try {
 		const config = {
@@ -38,6 +39,7 @@ export const login = (email, password) => async (dispatch) => {
 				"Content-Type": " application/json",
 			},
 		};
+		//sent from the frontend body
 		const { data } = await axios.post("/api/users/login", {
 			email,
 			password,
@@ -45,7 +47,7 @@ export const login = (email, password) => async (dispatch) => {
 		});
 
 		dispatch({ type: USER_LOGIN_SUCCESS, payload: data });
-		//the data is the object of userInfo
+		//the data is the object of userInfo from the login reducer
 		localStorage.setItem("userInfo", JSON.stringify(data));
 	} catch (error) {
 		dispatch({ type: USER_LOGIN_FAIL, payload: error });
@@ -67,9 +69,10 @@ export const register = (name, email, password) => async (dispatch) => {
 			password,
 			config,
 		});
+		console.log("Datacheck", data);
 
 		dispatch({ type: USER_REGISTER_SUCCESS, payload: data });
-		console.log(data);
+
 		localStorage.setItem("userInfo", JSON.stringify(data));
 	} catch (error) {
 		dispatch({ type: USER_REGISTER_FAIL, payload: error });

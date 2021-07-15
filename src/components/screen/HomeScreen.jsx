@@ -9,19 +9,34 @@ import Paginate from "./../Paginate";
 import ProductCarousel from "./ProductCarousel";
 import Meta from "../Meta";
 import { Link } from "react-router-dom";
+import { useQuery } from "react-query";
+import axios from "axios";
+import { client } from "../../utils/api-client";
+
 const HomeScreen = ({ match }) => {
 	const dispatch = useDispatch();
 	const productList = useSelector((state) => state.productList);
-	const { products, loading, error, pages, page } = productList;
+	const [page, setPage] = React.useState(1);
+	// const { products, loading, error, pages, page } = productList; REDUX STORE
 
-	const pageNumber = match.params.pageNumber || 1;
+	const fetchProducts = async () => {
+		const res = await fetch(`/api/products/?page=${page}`);
+		return res.json();
+	};
 
-	//This is coming from the search route query :keyword
-	const keyword = match.params.keyword;
-	useEffect(() => {
-		//pass the keyword query to the action that fetches products i.e /iph/3
-		dispatch(productListAction(keyword, pageNumber));
-	}, [dispatch, keyword]);
+	const { data, status, isLoading, isError } = useQuery(
+		["product", page],
+		fetchProducts
+	);
+
+	// const pageNumber = match.params.pageNumber || 1;
+
+	// //This is coming from the search route query :keyword
+	// const keyword = match.params.keyword;
+	// useEffect(() => {
+	// 	//pass the keyword query to the action that fetches products i.e /iph/3
+	// 	dispatch(productListAction(keyword, pageNumber));
+	// }, [dispatch, keyword]);
 
 	return (
 		<>
@@ -30,15 +45,15 @@ const HomeScreen = ({ match }) => {
 
 			<Meta />
 			<h1> Latest Products</h1>
-			{loading ? (
+			{isLoading ? (
 				<Loading />
-			) : error ? (
-				<ErrorMessage variant="danger">{error}</ErrorMessage>
+			) : isError ? (
+				<ErrorMessage variant="danger">{isError}</ErrorMessage>
 			) : (
-				<Row>
-					{products.map((product) => (
+				<Row xl={12}>
+					{data.products.map((product) => (
 						<Col
-							className="shadow-lg p-3 m-3 bg-white rounded"
+							className="shadow-lg p-3 m-3 bg-white rounded beautify"
 							key={product._id}
 							sm={12}
 							md={6}
@@ -50,13 +65,14 @@ const HomeScreen = ({ match }) => {
 					))}
 				</Row>
 			)}
+
 			<Row>
 				{" "}
-				<Paginate
+				{/* <Paginate
 					pages={pages}
 					page={page}
 					keyword={keyword ? keyword : ""}
-				/>{" "}
+				/>{" "} */}
 			</Row>
 		</>
 	);

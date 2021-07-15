@@ -12,6 +12,7 @@ export const cartReducers = (
 ) => {
 	switch (action.type) {
 		case CART_ADD_ITEM:
+			//https://dev.to/aneeqakhan/uilding-shopping-cart-actions-and-reducers-with-redux-in5
 			//product is data._id in cartActions.js from b.end
 			const item = action.payload;
 			//existItems simply means get the item that matches the product id (payload)
@@ -31,6 +32,13 @@ export const cartReducers = (
 				};
 			}
 
+		// return {
+		// 	...state,
+		// 	cartItems: state.cartItems.map((product) =>
+		// 		product.id === action.id ? { ...product, selected: true } : product
+		// 	),
+		// };
+
 		case CART_REMOVE_ITEM:
 			return {
 				...state,
@@ -38,6 +46,15 @@ export const cartReducers = (
 					(item) => item.product !== action.payload
 				),
 			};
+
+		// return {
+		// 	...state,
+		// 	cartItems: state.cartItems.map((product) =>
+		// 		product.id === action.id
+		// 			? { ...product, selected: false, quantity: 1 }
+		// 			: product
+		// 	),
+		// };
 
 		case CART_ITEM_RESET:
 			return {

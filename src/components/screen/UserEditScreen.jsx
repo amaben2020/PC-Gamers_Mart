@@ -55,6 +55,7 @@ const UserEditScreen = ({ location, history, match }) => {
 
 	//This useEffect simply makes the data available for the user's information that would be updated
 	useEffect(() => {
+		let isFetched = false;
 		// if the update is successful, update the user details and redirect to userlist
 		if (successUpdate) {
 			//reset the state after update is successful and move admin to /userlist
@@ -62,9 +63,10 @@ const UserEditScreen = ({ location, history, match }) => {
 			history.push("/admin/userlist");
 		} else {
 			//if there isnt a username in the name field or the userid in the database doesnt match with the one we selected.... kinda impossible but just making sure all is well, the display the userDetails from backend for that user
+			console.log(userAdminProfileEdit.name);
 			if (!userAdminProfileEdit.name || userAdminProfileEdit._id !== userId) {
 				dispatch(getUserForAdmin(userId));
-
+				isFetched = true;
 				//dispatch(getUserDetails(user._id));
 			} else {
 				setName(userAdminProfileEdit.name);

@@ -24,29 +24,30 @@ import {
 import axios from "axios";
 
 //This handles every product rendered on the UI
-export const productListAction = (keyword = "", pageNumber = "") => async (
-	dispatch
-) => {
-	dispatch({ type: PRODUCT_LIST_REQUEST });
+export const productListAction =
+	(keyword = "", pageNumber = "") =>
+	async (dispatch) => {
+		dispatch({ type: PRODUCT_LIST_REQUEST });
 
-	try {
-		//filter the products by inputted words and pagenumber queries
-		const { data } = await axios.get(
-			`/api/products?keyword=${keyword}&pageNumber=${pageNumber}`
-		);
+		try {
+			//filter the products by inputted words and pagenumber queries
 
-		dispatch({ type: PRODUCT_LIST_SUCCESS, payload: data });
-	} catch (error) {
-		//Dispatching error, if there is a custom error, fire that one, else use generic error
-		dispatch({
-			type: PRODUCT_LIST_FAIL,
-			payload:
-				error.response && error.response.data.message
-					? error.data.message
-					: error.message,
-		});
-	}
-};
+			const { data } = await axios.get(
+				`/api/products?keyword=${keyword}&pageNumber=${pageNumber}`
+			);
+
+			dispatch({ type: PRODUCT_LIST_SUCCESS, payload: data });
+		} catch (error) {
+			//Dispatching error, if there is a custom error, fire that one, else use generic error
+			dispatch({
+				type: PRODUCT_LIST_FAIL,
+				payload:
+					error.response && error.response.data.message
+						? error.data.message
+						: error.message,
+			});
+		}
+	};
 
 export const listTopProduct = () => async (dispatch) => {
 	dispatch({ type: PRODUCT_TOP_REQUEST });
@@ -86,30 +87,28 @@ export const productDetailsAction = (id) => async (dispatch) => {
 	}
 };
 
-export const productDeleteAction = (productId) => async (
-	dispatch,
-	getState
-) => {
-	dispatch({ type: PRODUCT_DELETE_REQUEST });
-	try {
-		//getting the userInfo i.e Token from state so you could access the user's profile
-		const {
-			userLogin: { userInfo },
-		} = getState();
+export const productDeleteAction =
+	(productId) => async (dispatch, getState) => {
+		dispatch({ type: PRODUCT_DELETE_REQUEST });
+		try {
+			//getting the userInfo i.e Token from state so you could access the user's profile
+			const {
+				userLogin: { userInfo },
+			} = getState();
 
-		const config = {
-			headers: {
-				Authorization: `Bearer ${userInfo.token} `,
-			},
-		};
-		// user._id is from the database, user is the object we wanna send to database for updating
-		await axios.delete(`/api/products/${productId}`, config);
-		dispatch({ type: PRODUCT_DELETE_SUCCESS });
-		//dispatch({ type: USER_DETAILS_SUCCESS, payload: data });
-	} catch (error) {
-		dispatch({ type: PRODUCT_DELETE_FAIL, payload: error });
-	}
-};
+			const config = {
+				headers: {
+					Authorization: `Bearer ${userInfo.token} `,
+				},
+			};
+			// user._id is from the database, user is the object we wanna send to database for updating
+			await axios.delete(`/api/products/${productId}`, config);
+			dispatch({ type: PRODUCT_DELETE_SUCCESS });
+			//dispatch({ type: USER_DETAILS_SUCCESS, payload: data });
+		} catch (error) {
+			dispatch({ type: PRODUCT_DELETE_FAIL, payload: error });
+		}
+	};
 
 export const productCreateAction = () => async (dispatch, getState) => {
 	//no need for any parameters
@@ -162,29 +161,27 @@ export const productUpdateAction = (product) => async (dispatch, getState) => {
 	}
 };
 
-export const createProductReview = (productId, review) => async (
-	dispatch,
-	getState
-) => {
-	//product is what you wanna update
-	dispatch({ type: PRODUCT_REVIEW_REQUEST });
-	try {
-		//getting the userInfo i.e Token from state so you could access the user's profile
-		const {
-			userLogin: { userInfo },
-		} = getState();
+export const createProductReview =
+	(productId, review) => async (dispatch, getState) => {
+		//product is what you wanna update
+		dispatch({ type: PRODUCT_REVIEW_REQUEST });
+		try {
+			//getting the userInfo i.e Token from state so you could access the user's profile
+			const {
+				userLogin: { userInfo },
+			} = getState();
 
-		const config = {
-			headers: {
-				"Content-Type": "application/json",
-				Authorization: `Bearer ${userInfo.token} `,
-			},
-		};
-		// we just pass a review object to create review, this serves as body
-		await axios.put(`/api/products/${productId}/reviews`, review, config);
-		//you dont need a payload, just success if true
-		dispatch({ type: PRODUCT_REVIEW_SUCCESS });
-	} catch (error) {
-		dispatch({ type: PRODUCT_REVIEW_FAIL, payload: error });
-	}
-};
+			const config = {
+				headers: {
+					"Content-Type": "application/json",
+					Authorization: `Bearer ${userInfo.token} `,
+				},
+			};
+			// we just pass a review object to create review, this serves as body
+			await axios.put(`/api/products/${productId}/reviews`, review, config);
+			//you dont need a payload, just success if true
+			dispatch({ type: PRODUCT_REVIEW_SUCCESS });
+		} catch (error) {
+			dispatch({ type: PRODUCT_REVIEW_FAIL, payload: error });
+		}
+	};
