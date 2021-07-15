@@ -19,6 +19,7 @@ const LoginScreen = ({ location, history }) => {
 	// console.log(redirect); shipping
 	// console.log(location.search); ?redirect=shipping
 	//just playing around
+	//commit 2 that would create conflicts
 
 	const submitHandler = (e) => {
 		e.preventDefault();
